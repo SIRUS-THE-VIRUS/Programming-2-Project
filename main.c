@@ -179,19 +179,29 @@ void add_artist(){
         scanf("%d",&artist[acount].booking[bcount[acount]].bookingNum);
         printf("Enter Artist's booking type (O)versea or (L)ocal: ");
         scanf(" %c",&artist[acount].booking[bcount[acount]].type);
+        int date = FALSE;
+        while(date == FALSE && bcount[acount]>=0 ){
         printf("Enter Artist's booking Date (Day month year): ");
         scanf("%d %d %d",&artist[acount].booking[bcount[acount]].theDate.day,&artist[acount].booking[bcount[acount]].theDate.month,&artist[acount].booking[bcount[acount]].theDate.year);
-        for(t=0;t<=bcount;t++){
+        for(t=0;t<bcount[acount];t++){
             if(artist[acount].booking[bcount[acount]].theDate.day == artist[acount].booking[t].theDate.day &&
                artist[acount].booking[bcount[acount]].theDate.month == artist[acount].booking[t].theDate.month &&
-               artist[acount].booking[bcount[acount]].theDate.year == artist[acount].booking[t].theDate.year)
+               artist[acount].booking[bcount[acount]].theDate.year == artist[acount].booking[t].theDate.year){
                printf("That date is already taken");
-            if(artist[acount].booking[bcount[acount]].theDate.day == (artist[acount].booking[t].theDate.day - 2) ||
+               date = FALSE;
+               }else if(artist[acount].booking[bcount[acount]].theDate.day == (artist[acount].booking[t].theDate.day - 2) ||
+               artist[acount].booking[bcount[acount]].theDate.day == (artist[acount].booking[t].theDate.day - 1) ||
+               artist[acount].booking[bcount[acount]].theDate.day == (artist[acount].booking[t].theDate.day + 1) ||
                artist[acount].booking[bcount[acount]].theDate.day == (artist[acount].booking[t].theDate.day + 2) &&
                artist[acount].booking[bcount[acount]].theDate.month == artist[acount].booking[t].theDate.month &&
-               artist[acount].booking[bcount[acount]].theDate.year == artist[acount].booking[t].theDate.year)
+               artist[acount].booking[bcount[acount]].theDate.year == artist[acount].booking[t].theDate.year){
                printf("That date is too close to another booking date");
+               date = FALSE;
+               }else{date = TRUE;break;}
 
+        }
+        if (bcount[acount]==0)
+            date = TRUE;
         }
         printf("Enter Artist's booking hotel: ");
         scanf(" %[^\n]s",artist[acount].booking[bcount[acount]].hotel);
@@ -243,3 +253,6 @@ void generate_report(){
 
 
 };
+
+
+
