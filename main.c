@@ -50,6 +50,7 @@ FILE *PnamePtr;
 int whoami;
 int acount=0;
 int bcount[MAX_ART];
+int pos;
 int main()
 {
     char uname[20];
@@ -180,26 +181,28 @@ void add_artist(){
         printf("Enter Artist's booking type (O)versea or (L)ocal: ");
         scanf(" %c",&artist[acount].booking[bcount[acount]].type);
         int date = FALSE;
-        while(date == FALSE && bcount[acount]>=0 ){
+        while(date == FALSE && bcount[acount]>=0){
         printf("Enter Artist's booking Date (Day month year): ");
         scanf("%d %d %d",&artist[acount].booking[bcount[acount]].theDate.day,&artist[acount].booking[bcount[acount]].theDate.month,&artist[acount].booking[bcount[acount]].theDate.year);
-        for(t=0;t<bcount[acount];t++){
-            if(artist[acount].booking[bcount[acount]].theDate.day == artist[acount].booking[t].theDate.day &&
-               artist[acount].booking[bcount[acount]].theDate.month == artist[acount].booking[t].theDate.month &&
-               artist[acount].booking[bcount[acount]].theDate.year == artist[acount].booking[t].theDate.year){
-               printf("That date is already taken");
-               date = FALSE;
-               }else if(artist[acount].booking[bcount[acount]].theDate.day == (artist[acount].booking[t].theDate.day - 2) ||
-               artist[acount].booking[bcount[acount]].theDate.day == (artist[acount].booking[t].theDate.day - 1) ||
-               artist[acount].booking[bcount[acount]].theDate.day == (artist[acount].booking[t].theDate.day + 1) ||
-               artist[acount].booking[bcount[acount]].theDate.day == (artist[acount].booking[t].theDate.day + 2) &&
-               artist[acount].booking[bcount[acount]].theDate.month == artist[acount].booking[t].theDate.month &&
-               artist[acount].booking[bcount[acount]].theDate.year == artist[acount].booking[t].theDate.year){
-               printf("That date is too close to another booking date");
-               date = FALSE;
-               }else{date = TRUE;break;}
+        if(artist[acount].booking[bcount[acount]].type == 'O'){
+            for(t=0;t<bcount[acount];t++){
+                if(artist[acount].booking[bcount[acount]].theDate.day == artist[acount].booking[t].theDate.day &&
+                   artist[acount].booking[bcount[acount]].theDate.month == artist[acount].booking[t].theDate.month &&
+                   artist[acount].booking[bcount[acount]].theDate.year == artist[acount].booking[t].theDate.year){
+                   printf("That date is already taken");
+                   date = FALSE;
+                   }else if(artist[acount].booking[bcount[acount]].theDate.day == (artist[acount].booking[t].theDate.day - 2) ||
+                   artist[acount].booking[bcount[acount]].theDate.day == (artist[acount].booking[t].theDate.day - 1) ||
+                   artist[acount].booking[bcount[acount]].theDate.day == (artist[acount].booking[t].theDate.day + 1) ||
+                   artist[acount].booking[bcount[acount]].theDate.day == (artist[acount].booking[t].theDate.day + 2) &&
+                   artist[acount].booking[bcount[acount]].theDate.month == artist[acount].booking[t].theDate.month &&
+                   artist[acount].booking[bcount[acount]].theDate.year == artist[acount].booking[t].theDate.year){
+                   printf("That date is too close to another booking date");
+                   date = FALSE;
+                   }else{date = TRUE;break;}
 
-        }
+            }
+        }else{date = TRUE;}
         if (bcount[acount]==0)
             date = TRUE;
         }
@@ -234,8 +237,104 @@ void add_artist(){
     scanf("%d",&artist[acount].foundation.majorCurCharity);
     acount+=1;
 };
-void update_artist(){
+int find_artist(char a[30]){
+    int b;
+    for(b=0;b<acount;b++)
+    if(strcmp(a,artist[b].stageName)==0)
+        return b;
+    return -1;
+};
+int find_booking(int temp_bnum){
+    int j;
+    for(j=0;j<BOOK_MAX;j++)
+        if(temp_bnum == artist[pos].booking[j].bookingNum)
+            return j;
+    return -1;
+};
 
+void update_artist(){
+    int temp_bnum,t;
+    char temp_artist[20];
+    char choice2;
+    printf("Which Artist(stage name) would you like to update: ");
+    scanf(" %[^\n]s",temp_artist);
+    pos = find_artist(temp_artist);
+    if(pos == -1){
+        printf("No artist found with that artist name");
+    }else{
+        printf("What do you want to update: (A)rtist basic info , (B)ooking info , (F)oundation information");
+        scanf("%c",&choice2);
+        if(choice2 == 'A'){
+            printf("*****ARTISTS INFORMATION*****\n");
+            printf("Enter Artist's StageName:");
+            scanf(" %[^\n]s",artist[pos].stageName);
+            printf("Enter Artist's RealName: ");
+            scanf(" %[^\n]s",artist[pos].realName);
+            printf("Enter Artist's accountNum: ");
+            scanf("%d",&artist[pos].accountNum);
+            printf("Enter Artist's accountBal: ");
+            scanf("%f",&artist[pos].accountBal);
+            printf("Enter Artist's telephone #: ");
+            scanf("%ld",&artist[pos].telephone);
+        }else if(choice2 == 'B'){
+            printf("Enter Booking number for booking you want to update: ");
+            scanf("%d",&temp_bnum);
+            temp_bnum = find_booking(temp_bnum);
+            if(temp_bnum == -1){
+                printf("That booking number does not exist:\n");
+            }else if(temp_bnum< 15){
+                printf("Enter Artist's booking type (O)versea or (L)ocal: ");
+                scanf(" %c",&artist[pos].booking[temp_bnum].type);
+                int date = FALSE;
+                while(date == FALSE && bcount[pos]>=0){
+                    printf("Enter Artist's booking Date (Day month year): ");
+                    scanf("%d %d %d",&artist[pos].booking[temp_bnum].theDate.day,&artist[pos].booking[temp_bnum].theDate.month,&artist[pos].booking[temp_bnum].theDate.year);
+                    if(artist[pos].booking[temp_bnum].type == 'O'){
+                        for(t=0;t<temp_bnum;t++){
+                            if(artist[pos].booking[temp_bnum].theDate.day == artist[pos].booking[t].theDate.day &&
+                               artist[pos].booking[temp_bnum].theDate.month == artist[pos].booking[t].theDate.month &&
+                               artist[pos].booking[temp_bnum].theDate.year == artist[pos].booking[t].theDate.year){
+                               printf("That date is already taken");
+                               date = FALSE;
+                               }else if(artist[pos].booking[temp_bnum].theDate.day == (artist[pos].booking[t].theDate.day - 2) ||
+                               artist[pos].booking[temp_bnum].theDate.day == (artist[pos].booking[t].theDate.day - 1) ||
+                               artist[pos].booking[temp_bnum].theDate.day == (artist[pos].booking[t].theDate.day + 1) ||
+                               artist[pos].booking[temp_bnum].theDate.day == (artist[pos].booking[t].theDate.day + 2) &&
+                               artist[pos].booking[temp_bnum].theDate.month == artist[pos].booking[t].theDate.month &&
+                               artist[pos].booking[temp_bnum].theDate.year == artist[pos].booking[t].theDate.year){
+                               printf("That date is too close to another booking date");
+                               date = FALSE;
+                               }else{date = TRUE;break;}
+
+                        }
+                    }else{date = TRUE;}
+                    if (temp_bnum==0)
+                        date = TRUE;
+                }
+                printf("Enter Artist's booking hotel: ");
+                scanf(" %[^\n]s",artist[pos].booking[temp_bnum].hotel);
+                printf("Enter Artist's booking location(address): ");
+                scanf(" %[^\n]s",artist[pos].booking[temp_bnum].location);
+                printf("Enter Artist's booking guide: ");
+                scanf(" %[^\n]s",artist[pos].booking[temp_bnum].guide);
+                printf("Enter Artist's Booking flightInfo: ");
+                scanf(" %[^\n]s",artist[pos].booking[temp_bnum].flightInfo);
+                if(artist[pos].booking[temp_bnum].type == 'L'){
+                    printf("Enter Artist's Booking localRate (enter zero for voluntary): ");
+                    scanf("%f",&artist[pos].booking[temp_bnum].rate.localRate);
+                    artist[pos].earningPerYr+=artist[pos].booking[temp_bnum].rate.localRate;
+                }else if(artist[pos].booking[temp_bnum].type == 'O'){
+                    printf("Enter Artist's Booking foreignRate(including hotel,plane fair for all members): ");
+                    scanf("%f",&artist[pos].booking[temp_bnum].rate.foreignRate);
+                    artist[pos].earningPerYr+=artist[pos].booking[temp_bnum].rate.foreignRate;
+                }
+                temp_bnum+=1;
+            }else{
+                printf("This artist can only have a maximum of 15 bookings\n");
+            }
+
+        }
+    }
 
 };
 
@@ -253,6 +352,3 @@ void generate_report(){
 
 
 };
-
-
-
