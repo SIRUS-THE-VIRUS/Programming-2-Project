@@ -45,8 +45,8 @@ typedef struct{
 Artists artist[MAX_ART];
 
 enum response {TRUE,FALSE};
-FILE *unamePtr;
-FILE *PnamePtr;
+FILE *ArtistfilePtr;
+FILE *LogindataPtr;
 int whoami;
 int acount=0;
 int bcount[MAX_ART];
@@ -59,13 +59,13 @@ int main()
     int login_attempts = 0;
     printf("1)Manager\n2)Clerk\n=======>>>");
     scanf("%d",&whoami);
+    fflush(stdin);
     while(login_attempts!=3){
     printf("Enter the Username: ");
-    scanf("%s",uname);
+    gets(uname);
     printf("Enter the Password: ");
-    scanf("%s",pname);
-    fflush(stdin);
-    if(validate_login(uname,pname,whoami)== 0){
+    gets(pname);
+    if(validate_login(uname,pname,whoami)== TRUE){
         while(choice != 7){
         choice = full_menu();
         run(choice);
@@ -86,13 +86,13 @@ int validate_login(char *uname, char *passwd,int a){
     char uname2[20];
     char pname2[20];
     if(a==1){
-        PnamePtr = fopen("Manager_Password.bin","rb");
+        LogindataPtr = fopen("Manager_Password.bin","rb");
     }else if(a==2){
-        PnamePtr = fopen("Clerk_Password.bin","rb");
+        LogindataPtr = fopen("Clerk_Password.bin","rb");
     }
-    while(!feof(PnamePtr)){
-        fscanf(PnamePtr,"%s %s",uname2,pname2);
-        if(strcmp(uname2,uname)==0 && strcmp(pname2,passwd)==0){
+    while(!feof(LogindataPtr)){
+        fscanf(LogindataPtr,"%s %s",uname2,pname2);
+        if(strcmp(uname2,uname)==0 && strcmp(pname2,passwd)==TRUE){
                 printf("hi\n");
             return TRUE;
         }else{
@@ -103,7 +103,8 @@ int validate_login(char *uname, char *passwd,int a){
 };
 int full_menu(){
     int a;
-    system("cls");
+    fflush(stdin);
+    //system("cls");
     printf(" \n");printf(" ");printf(" ");printf(" ");printf(" ");printf(" ");printf(" ");printf(" ");
     printf("\t\t\t\t    Company\n");
     printf("\t\t\tArtist Management System\n");
@@ -158,11 +159,12 @@ void run(int a){
 void add_artist(){
     int a;
     int t;
+    fflush(stdin);
     printf("*****ARTISTS INFORMATION*****\n");
     printf("Enter Artist's StageName:");
-    scanf(" %[^\n]s",artist[acount].stageName);
+    gets(artist[acount].stageName);
     printf("Enter Artist's RealName: ");
-    scanf(" %[^\n]s",artist[acount].realName);
+    gets(artist[acount].realName);
     printf("Enter Artist's accountNum: ");
     scanf("%d",&artist[acount].accountNum);
     printf("Enter Artist's accountBal: ");
@@ -203,17 +205,18 @@ void add_artist(){
 
             }
         }else{date = TRUE;}
-        if (bcount[acount]==0)
+        if (bcount[acount]==TRUE)
             date = TRUE;
         }
+        fflush(stdin);
         printf("Enter Artist's booking hotel: ");
-        scanf(" %[^\n]s",artist[acount].booking[bcount[acount]].hotel);
+        gets(artist[acount].booking[bcount[acount]].hotel);
         printf("Enter Artist's booking location(address): ");
-        scanf(" %[^\n]s",artist[acount].booking[bcount[acount]].location);
+        gets(artist[acount].booking[bcount[acount]].location);
         printf("Enter Artist's booking guide: ");
-        scanf(" %[^\n]s",artist[acount].booking[bcount[acount]].guide);
+        gets(artist[acount].booking[bcount[acount]].guide);
         printf("Enter Artist's Booking flightInfo: ");
-        scanf(" %[^\n]s",artist[acount].booking[bcount[acount]].flightInfo);
+        gets(artist[acount].booking[bcount[acount]].flightInfo);
         if(artist[acount].booking[bcount[acount]].type == 'L'){
             printf("Enter Artist's Booking localRate (enter zero for voluntary): ");
             scanf("%f",&artist[acount].booking[bcount[acount]].rate.localRate);
@@ -256,20 +259,22 @@ void update_artist(){
     int temp_bnum,t;
     char temp_artist[20];
     char choice2;
+    fflush(stdin);
     printf("Which Artist(stage name) would you like to update: ");
-    scanf(" %[^\n]s",temp_artist);
+    gets(temp_artist);
     pos = find_artist(temp_artist);
     if(pos == -1){
         printf("No artist found with that artist name");
     }else{
-        printf("What do you want to update: (A)rtist basic info , (B)ooking info , (F)oundation information");
-        scanf("%c",&choice2);
+        printf("What do you want to update: (A)rtist basic info , (B)ooking info , (F)oundation information====>>> ");
+        scanf(" %c",&choice2);
         if(choice2 == 'A'){
+            fflush(stdin);
             printf("*****ARTISTS INFORMATION*****\n");
             printf("Enter Artist's StageName:");
-            scanf(" %[^\n]s",artist[pos].stageName);
+            gets(artist[pos].stageName);
             printf("Enter Artist's RealName: ");
-            scanf(" %[^\n]s",artist[pos].realName);
+            gets(artist[pos].realName);
             printf("Enter Artist's accountNum: ");
             scanf("%d",&artist[pos].accountNum);
             printf("Enter Artist's accountBal: ");
@@ -311,14 +316,15 @@ void update_artist(){
                     if (temp_bnum==0)
                         date = TRUE;
                 }
+                fflush(stdin);
                 printf("Enter Artist's booking hotel: ");
-                scanf(" %[^\n]s",artist[pos].booking[temp_bnum].hotel);
+                gets(artist[pos].booking[temp_bnum].hotel);
                 printf("Enter Artist's booking location(address): ");
-                scanf(" %[^\n]s",artist[pos].booking[temp_bnum].location);
+                gets(artist[pos].booking[temp_bnum].location);
                 printf("Enter Artist's booking guide: ");
-                scanf(" %[^\n]s",artist[pos].booking[temp_bnum].guide);
+                gets(artist[pos].booking[temp_bnum].guide);
                 printf("Enter Artist's Booking flightInfo: ");
-                scanf(" %[^\n]s",artist[pos].booking[temp_bnum].flightInfo);
+                gets(artist[pos].booking[temp_bnum].flightInfo);
                 if(artist[pos].booking[temp_bnum].type == 'L'){
                     printf("Enter Artist's Booking localRate (enter zero for voluntary): ");
                     scanf("%f",&artist[pos].booking[temp_bnum].rate.localRate);
