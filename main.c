@@ -159,6 +159,7 @@ void run(int a){
 void add_artist(){
     int a;
     int t;
+    int counter;
     fflush(stdin);
     printf("*****ARTISTS INFORMATION*****\n");
     printf("Enter Artist's StageName:");
@@ -176,36 +177,36 @@ void add_artist(){
     printf("*****ARTIST'S BOOKING INFO*****\n");
     printf("How many bookings for this artist: ");
     scanf("%d",&a);
-    if(bcount[acount]< 15){
-    while(bcount[acount]<a){
+    if(bcount[acount]< BOOK_MAX){
+    for(counter=0;counter<a;counter++){
         printf("Enter Artist's bookingNum:");
-        scanf("%d",&artist[acount].booking[bcount[acount]].bookingNum);
+        scanf("%d",&artist[acount].booking[counter].bookingNum);
         printf("Enter Artist's booking type (O)versea or (L)ocal: ");
-        scanf(" %c",&artist[acount].booking[bcount[acount]].type);
+        scanf(" %c",&artist[acount].booking[counter].type);
         int date = FALSE;
         while(date == FALSE && bcount[acount]>=0){
         printf("Enter Artist's booking Date (Day month year): ");
-        scanf("%d %d %d",&artist[acount].booking[bcount[acount]].theDate.day,&artist[acount].booking[bcount[acount]].theDate.month,&artist[acount].booking[bcount[acount]].theDate.year);
-        if(artist[acount].booking[bcount[acount]].type == 'O'){
+        scanf("%d %d %d",&artist[acount].booking[counter].theDate.day,&artist[acount].booking[counter].theDate.month,&artist[acount].booking[counter].theDate.year);
+        if(artist[acount].booking[counter].type == 'O'){
             for(t=0;t<bcount[acount];t++){
-                if(artist[acount].booking[bcount[acount]].theDate.day == artist[acount].booking[t].theDate.day &&
-                   artist[acount].booking[bcount[acount]].theDate.month == artist[acount].booking[t].theDate.month &&
-                   artist[acount].booking[bcount[acount]].theDate.year == artist[acount].booking[t].theDate.year){
+                if(artist[acount].booking[counter].theDate.day == artist[acount].booking[t].theDate.day &&
+                   artist[acount].booking[counter].theDate.month == artist[acount].booking[t].theDate.month &&
+                   artist[acount].booking[counter].theDate.year == artist[acount].booking[t].theDate.year){
                    printf("That date is already taken");
                    date = FALSE;
-                   }else if(artist[acount].booking[bcount[acount]].theDate.day == (artist[acount].booking[t].theDate.day - 2) ||
-                   artist[acount].booking[bcount[acount]].theDate.day == (artist[acount].booking[t].theDate.day - 1) ||
-                   artist[acount].booking[bcount[acount]].theDate.day == (artist[acount].booking[t].theDate.day + 1) ||
-                   artist[acount].booking[bcount[acount]].theDate.day == (artist[acount].booking[t].theDate.day + 2) &&
-                   artist[acount].booking[bcount[acount]].theDate.month == artist[acount].booking[t].theDate.month &&
-                   artist[acount].booking[bcount[acount]].theDate.year == artist[acount].booking[t].theDate.year){
+                   }else if(artist[acount].booking[counter].theDate.day == (artist[acount].booking[t].theDate.day - 2) ||
+                   artist[acount].booking[counter].theDate.day == (artist[acount].booking[t].theDate.day - 1) ||
+                   artist[acount].booking[counter].theDate.day == (artist[acount].booking[t].theDate.day + 1) ||
+                   artist[acount].booking[counter].theDate.day == (artist[acount].booking[t].theDate.day + 2) &&
+                   artist[acount].booking[counter].theDate.month == artist[acount].booking[t].theDate.month &&
+                   artist[acount].booking[counter].theDate.year == artist[acount].booking[t].theDate.year){
                    printf("That date is too close to another booking date");
                    date = FALSE;
                    }else{date = TRUE;break;}
 
             }
         }else{date = TRUE;}
-        if (bcount[acount]==TRUE)
+        if (counter==TRUE)
             date = TRUE;
         }
         fflush(stdin);
@@ -346,15 +347,18 @@ void update_artist(){
 
 void display_artist(){
     int a;
+    int counter;
     for(a=0;a<acount;a++){
         printf("Artist StageName:%s\nArtist RealName:%s\nArtist Tele#:%d\n",artist[a].stageName,artist[a].realName,artist[a].telephone);
         printf("Artist Account #:%d\nArtist Acc Balance:%.f\nArtist earning per year:%.f\n",artist[a].accountNum,artist[a].accountBal,artist[a].earningPerYr);
-        printf("Artist Booking #:%d\nArtist Booking location%s\n",artist[a].booking[bcount[a]].bookingNum,artist[a].booking[bcount[a]].location);
-        printf("Artist Hotel:%s\nArtist flight info:%s\n",artist[a].booking[bcount[a]].hotel,artist[a].booking[bcount[a]].flightInfo);
         printf("*****BOOKING INFORMATION*****\n");
-        printf("Artist Booking date(day month year): %d %d %d\n",artist[a].booking[bcount[a]].theDate.day,artist[a].booking[bcount[a]].theDate.month,artist[a].booking[bcount[a]].theDate.year);
-        printf("Artist Booking type-(L)ocal or (O)verseas: %c\nArtist Booking Guide:%s\n",artist[a].booking[bcount[a]].type,artist[a].booking[bcount[a]].guide);
-        printf("Artist Booking Rate: %.f\n",artist[a].booking[bcount[a]].rate);
+        for(counter=0;counter<bcount[a];counter++){
+            printf("Artist Booking #:%d\nArtist Booking location%s\n",artist[a].booking[counter].bookingNum,artist[a].booking[counter].location);
+            printf("Artist Hotel:%s\nArtist flight info:%s\n",artist[a].booking[counter].hotel,artist[a].booking[counter].flightInfo);
+            printf("Artist Booking date(day month year): %d %d %d\n",artist[a].booking[counter].theDate.day,artist[a].booking[counter].theDate.month,artist[a].booking[counter].theDate.year);
+            printf("Artist Booking type-(L)ocal or (O)verseas: %c\nArtist Booking Guide:%s\n",artist[a].booking[counter].type,artist[a].booking[counter].guide);
+            printf("Artist Booking Rate: %.f\n",artist[a].booking[counter].rate);
+        }
         printf("*****Foundation Information*****\n");
         printf("Artist Foundation Acc #:%.f\nArtist Foundation Balance:%.f\nArtist Foundation Major Charity:%s\n",artist[a].foundation.fAccountNum,artist[a].foundation.balance,artist[a].foundation.majorCurCharity);
     }
