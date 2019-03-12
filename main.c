@@ -345,10 +345,55 @@ void update_artist(){
 };
 
 void display_artist(){
+    int a;
+    for(a=0;a<acount;a++){
+        printf("Artist StageName:%s\nArtist RealName:%s\nArtist Tele#:%d\n",artist[a].stageName,artist[a].realName,artist[a].telephone);
+        printf("Artist Account #:%d\nArtist Acc Balance:%.f\nArtist earning per year:%.f\n",artist[a].accountNum,artist[a].accountBal,artist[a].earningPerYr);
+        printf("Artist Booking #:%d\nArtist Booking location%s\n",artist[a].booking[bcount[a]].bookingNum,artist[a].booking[bcount[a]].location);
+        printf("Artist Hotel:%s\nArtist flight info:%s\n",artist[a].booking[bcount[a]].hotel,artist[a].booking[bcount[a]].flightInfo);
+        printf("*****BOOKING INFORMATION*****\n");
+        printf("Artist Booking date(day month year): %d %d %d\n",artist[a].booking[bcount[a]].theDate.day,artist[a].booking[bcount[a]].theDate.month,artist[a].booking[bcount[a]].theDate.year);
+        printf("Artist Booking type-(L)ocal or (O)verseas: %c\nArtist Booking Guide:%s\n",artist[a].booking[bcount[a]].type,artist[a].booking[bcount[a]].guide);
+        printf("Artist Booking Rate: %.f\n",artist[a].booking[bcount[a]].rate);
+        printf("*****Foundation Information*****\n");
+        printf("Artist Foundation Acc #:%.f\nArtist Foundation Balance:%.f\nArtist Foundation Major Charity:%s\n",artist[a].foundation.fAccountNum,artist[a].foundation.balance,artist[a].foundation.majorCurCharity);
+    }
 
 };
 
 void delete_artist(){
+    int a;
+    char temp_artist[20];
+    printf("Enter the Artist(stagename) you want to delete: ");
+    gets(temp_artist);
+    pos = find_artist(temp_artist);
+    if(pos == -1){
+        printf("No artist found with that artist name");
+    }else{
+        for(a = pos;a<=acount;a++){
+            strcpy(artist[a].stageName,artist[a+1].stageName);
+            strcpy(artist[a].realName,artist[a+1].realName);
+            artist[a].telephone=artist[a].telephone=artist[a].telephone=artist[a+1].telephone;
+            artist[a].accountNum=artist[a+1].accountNum;
+            artist[a].accountBal=artist[a+1].accountBal;
+            artist[a].earningPerYr=artist[a+1].earningPerYr;
+            printf("*****BOOKING INFORMATION*****\n");
+            artist[a].booking[bcount[a]].bookingNum=artist[a+1].booking[bcount[a+1]].bookingNum;
+            strcpy(artist[a].booking[bcount[a]].location,artist[a+1].booking[bcount[a+1]].location);
+            strcpy(artist[a].booking[bcount[a]].hotel,artist[a+1].booking[bcount[a+1]].hotel);
+            strcpy(artist[a].booking[bcount[a]].flightInfo,artist[a+1].booking[bcount[a+1]].flightInfo);
+            artist[a].booking[bcount[a]].theDate.day=artist[a+1].booking[bcount[a+1]].theDate.day;
+            artist[a].booking[bcount[a]].theDate.month=artist[a+1].booking[bcount[a+1]].theDate.month;
+            artist[a].booking[bcount[a]].theDate.year=artist[a+1].booking[bcount[a+1]].theDate.year;
+            artist[a].booking[bcount[a]].type=artist[a+1].booking[bcount[a+1]].type;
+            strcpy(artist[a].booking[bcount[a]].guide,artist[a+1].booking[bcount[a+1]].guide);
+            artist[a].booking[bcount[a]].rate=artist[a+1].booking[bcount[a+1]].rate;
+        printf("*****Foundation Information*****\n");
+            artist[a].foundation.fAccountNum=artist[a+1].foundation.fAccountNum;
+            artist[a].foundation.balance=artist[a+1].foundation.balance;
+            strcpy(artist[a].foundation.majorCurCharity,artist[a+1].foundation.majorCurCharity);
+        }
+    }
 
 };
 void search_artist(){
