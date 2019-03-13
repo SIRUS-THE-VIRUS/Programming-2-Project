@@ -57,7 +57,7 @@ int main()
     char pname[20];
     int choice;
     int login_attempts = 0;
-    printf("1)Manager\n2)Clerk\n=======>>>");
+    printf("0)Manager\n1)Clerk\n=======>>>");
     scanf("%d",&whoami);
     fflush(stdin);
     while(login_attempts!=3){
@@ -114,7 +114,7 @@ int full_menu(){
     printf("\t\t\t|   1. Add   Artist           |\n");
     printf("\t\t\t|   2. Update  Artist         |\n");
     printf("\t\t\t|   3. Display All Artist     |\n");
-    if(whoami == 1)
+    if(whoami == TRUE)
         printf("\t\t\t|   4. Delete Artist          |\n");
     printf("\t\t\t|   5. Search Artist          |\n");
     printf("\t\t\t|   6. Generate Report        |\n");
@@ -138,10 +138,15 @@ void run(int a){
         update_artist();
         break;
     case 3:
-        display_artist();
+        display_all_artist();
         break;
     case 4:
-        delete_artist();
+        if(whoami==TRUE){
+            delete_artist();
+        }else if(whoami==FALSE){
+            printf("You have entered a restricted area");
+            system("pause");
+        }
         break;
     case 5:
         search_artist();
@@ -211,21 +216,21 @@ void add_artist(){
         }
         fflush(stdin);
         printf("Enter Artist's booking hotel: ");
-        gets(artist[acount].booking[bcount[acount]].hotel);
+        gets(artist[acount].booking[counter].hotel);
         printf("Enter Artist's booking location(address): ");
-        gets(artist[acount].booking[bcount[acount]].location);
+        gets(artist[acount].booking[counter].location);
         printf("Enter Artist's booking guide: ");
-        gets(artist[acount].booking[bcount[acount]].guide);
+        gets(artist[acount].booking[counter].guide);
         printf("Enter Artist's Booking flightInfo: ");
-        gets(artist[acount].booking[bcount[acount]].flightInfo);
-        if(artist[acount].booking[bcount[acount]].type == 'L'){
+        gets(artist[acount].booking[counter].flightInfo);
+        if(artist[acount].booking[counter].type == 'L'){
             printf("Enter Artist's Booking localRate (enter zero for voluntary): ");
-            scanf("%f",&artist[acount].booking[bcount[acount]].rate.localRate);
-            artist[acount].earningPerYr+=artist[acount].booking[bcount[acount]].rate.localRate;
-        }else if(artist[acount].booking[bcount[acount]].type == 'O'){
+            scanf("%f",&artist[acount].booking[counter].rate.localRate);
+            artist[acount].earningPerYr+=artist[acount].booking[counter].rate.localRate;
+        }else if(artist[acount].booking[counter].type == 'O'){
             printf("Enter Artist's Booking foreignRate(including hotel,plane fair for all members): ");
-            scanf("%f",&artist[acount].booking[bcount[acount]].rate.foreignRate);
-            artist[acount].earningPerYr+=artist[acount].booking[bcount[acount]].rate.foreignRate;
+            scanf("%f",&artist[acount].booking[counter].rate.foreignRate);
+            artist[acount].earningPerYr+=artist[acount].booking[counter].rate.foreignRate;
         }
         bcount[acount]+=1;
     }
@@ -345,9 +350,10 @@ void update_artist(){
 
 };
 
-void display_artist(){
+void display_all_artist(){
     int a;
     int counter;
+    fflush(stdin);
     for(a=0;a<acount;a++){
         printf("Artist StageName:%s\nArtist RealName:%s\nArtist Tele#:%d\n",artist[a].stageName,artist[a].realName,artist[a].telephone);
         printf("Artist Account #:%d\nArtist Acc Balance:%.f\nArtist earning per year:%.f\n",artist[a].accountNum,artist[a].accountBal,artist[a].earningPerYr);
@@ -357,16 +363,23 @@ void display_artist(){
             printf("Artist Hotel:%s\nArtist flight info:%s\n",artist[a].booking[counter].hotel,artist[a].booking[counter].flightInfo);
             printf("Artist Booking date(day month year): %d %d %d\n",artist[a].booking[counter].theDate.day,artist[a].booking[counter].theDate.month,artist[a].booking[counter].theDate.year);
             printf("Artist Booking type-(L)ocal or (O)verseas: %c\nArtist Booking Guide:%s\n",artist[a].booking[counter].type,artist[a].booking[counter].guide);
-            printf("Artist Booking Rate: %.f\n",artist[a].booking[counter].rate);
+            if(artist[acount].booking[bcount[acount]].type == 'L')
+                printf("Artist Booking Rate: %.f\n",artist[a].booking[counter].rate.localRate);
+            if(artist[acount].booking[bcount[acount]].type == 'O')
+                printf("Artist Booking Rate: %.f\n",artist[a].booking[counter].rate.foreignRate);
         }
+        printf("Artist earning per year: ",artist[acount].earningPerYr);
         printf("*****Foundation Information*****\n");
-        printf("Artist Foundation Acc #:%.f\nArtist Foundation Balance:%.f\nArtist Foundation Major Charity:%s\n",artist[a].foundation.fAccountNum,artist[a].foundation.balance,artist[a].foundation.majorCurCharity);
+        printf("Artist Foundation Acc #:%d\n",artist[a].foundation.fAccountNum);
+        printf("Artist Foundation Balance:%.f\n",artist[a].foundation.balance);
+        printf("Artist Foundation Major Charity:%s\n",artist[a].foundation.majorCurCharity);
     }
 
 };
 
 void delete_artist(){
     int a;
+    int counter;
     char temp_artist[20];
     printf("Enter the Artist(stagename) you want to delete: ");
     gets(temp_artist);
@@ -381,17 +394,35 @@ void delete_artist(){
             artist[a].accountNum=artist[a+1].accountNum;
             artist[a].accountBal=artist[a+1].accountBal;
             artist[a].earningPerYr=artist[a+1].earningPerYr;
+            //check which one larger so to know which to set the upper bound for the for loop
             printf("*****BOOKING INFORMATION*****\n");
-            artist[a].booking[bcount[a]].bookingNum=artist[a+1].booking[bcount[a+1]].bookingNum;
-            strcpy(artist[a].booking[bcount[a]].location,artist[a+1].booking[bcount[a+1]].location);
-            strcpy(artist[a].booking[bcount[a]].hotel,artist[a+1].booking[bcount[a+1]].hotel);
-            strcpy(artist[a].booking[bcount[a]].flightInfo,artist[a+1].booking[bcount[a+1]].flightInfo);
-            artist[a].booking[bcount[a]].theDate.day=artist[a+1].booking[bcount[a+1]].theDate.day;
-            artist[a].booking[bcount[a]].theDate.month=artist[a+1].booking[bcount[a+1]].theDate.month;
-            artist[a].booking[bcount[a]].theDate.year=artist[a+1].booking[bcount[a+1]].theDate.year;
-            artist[a].booking[bcount[a]].type=artist[a+1].booking[bcount[a+1]].type;
-            strcpy(artist[a].booking[bcount[a]].guide,artist[a+1].booking[bcount[a+1]].guide);
-            artist[a].booking[bcount[a]].rate=artist[a+1].booking[bcount[a+1]].rate;
+            if(bcount[a]<=bcount[a+1]){
+                for(counter=0;counter<bcount[a+1];counter++){
+                    artist[a].booking[counter].bookingNum=artist[a+1].booking[counter].bookingNum;
+                    strcpy(artist[a].booking[counter].location,artist[a+1].booking[counter].location);
+                    strcpy(artist[a].booking[counter].hotel,artist[a+1].booking[counter].hotel);
+                    strcpy(artist[a].booking[counter].flightInfo,artist[a+1].booking[counter].flightInfo);
+                    artist[a].booking[counter].theDate.day=artist[a+1].booking[counter].theDate.day;
+                    artist[a].booking[counter].theDate.month=artist[a+1].booking[counter].theDate.month;
+                    artist[a].booking[counter].theDate.year=artist[a+1].booking[counter].theDate.year;
+                    artist[a].booking[counter].type=artist[a+1].booking[counter].type;
+                    strcpy(artist[a].booking[bcount[a]].guide,artist[a+1].booking[counter].guide);
+                    artist[a].booking[counter].rate=artist[a+1].booking[counter].rate;
+                }
+            }else if(bcount[a]>bcount[a+1]){
+                for(counter=0;counter<bcount[a];counter++){
+                    artist[a].booking[counter].bookingNum=artist[a+1].booking[counter].bookingNum;
+                    strcpy(artist[a].booking[counter].location,artist[a+1].booking[counter].location);
+                    strcpy(artist[a].booking[counter].hotel,artist[a+1].booking[counter].hotel);
+                    strcpy(artist[a].booking[counter].flightInfo,artist[a+1].booking[counter].flightInfo);
+                    artist[a].booking[counter].theDate.day=artist[a+1].booking[counter].theDate.day;
+                    artist[a].booking[counter].theDate.month=artist[a+1].booking[counter].theDate.month;
+                    artist[a].booking[counter].theDate.year=artist[a+1].booking[counter].theDate.year;
+                    artist[a].booking[counter].type=artist[a+1].booking[counter].type;
+                    strcpy(artist[a].booking[bcount[a]].guide,artist[a+1].booking[counter].guide);
+                    artist[a].booking[counter].rate=artist[a+1].booking[counter].rate;
+                }
+            }
         printf("*****Foundation Information*****\n");
             artist[a].foundation.fAccountNum=artist[a+1].foundation.fAccountNum;
             artist[a].foundation.balance=artist[a+1].foundation.balance;
