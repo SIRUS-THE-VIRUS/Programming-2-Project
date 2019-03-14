@@ -53,6 +53,7 @@ int bcount[MAX_ART];
 int pos;
 int main()
 {
+    readRec();
     char uname[20];
     char pname[20];
     int choice;
@@ -85,9 +86,9 @@ int main()
 int validate_login(char *uname, char *passwd,int a){
     char uname2[20];
     char pname2[20];
-    if(a==1){
+    if(a==0){
         LogindataPtr = fopen("Manager_Password.bin","rb");
-    }else if(a==2){
+    }else if(a==1){
         LogindataPtr = fopen("Clerk_Password.bin","rb");
     }
     while(!feof(LogindataPtr)){
@@ -155,6 +156,7 @@ void run(int a){
         generate_report();
         break;
     case 7:
+        storeRec();
         break;
 
     }
@@ -368,7 +370,6 @@ void display_all_artist(){
             if(artist[acount].booking[bcount[acount]].type == 'O')
                 printf("Artist Booking Rate: %.f\n",artist[a].booking[counter].rate.foreignRate);
         }
-        printf("Artist earning per year: ",artist[acount].earningPerYr);
         printf("*****Foundation Information*****\n");
         printf("Artist Foundation Acc #:%d\n",artist[a].foundation.fAccountNum);
         printf("Artist Foundation Balance:%.f\n",artist[a].foundation.balance);
@@ -438,3 +439,57 @@ void generate_report(){
 
 
 };
+
+void storeRec(){
+    int i,b;
+    ArtistfilePtr=fopen("artist_data.txt","w");
+	if(ArtistfilePtr==NULL){
+		printf("The file is not opened.\n");
+	}
+	else{
+        for(i=0;i<acount;i++){
+            fprintf(ArtistfilePtr,"%s= %s= %d %f %ld %f ",artist[i].stageName,artist[i].realName,artist[i].accountNum,
+                    artist[i].accountBal,artist[i].telephone,artist[i].earningPerYr);
+            printf("Writing data to file\n");
+            for(b=0;b<bcount[i];b++){
+                fprintf(ArtistfilePtr,"%d %c %d %d %d %s= %s= %s= %s= ",artist[i].booking[b].bookingNum,artist[i].booking[b].type,
+                        artist[i].booking[b].theDate.day,artist[i].booking[b].theDate.month,artist[i].booking[b].theDate.year,
+                        artist[i].booking[b].hotel,artist[i].booking[b].location,
+                        artist[i].booking[b].guide,artist[i].booking[b].flightInfo);
+                if(artist[i].booking[b].type == 'L')
+                    fprintf(ArtistfilePtr,"%f\n",artist[i].booking[b].rate.localRate);
+                else if(artist[i].booking[b].type == 'O')
+                    fprintf(ArtistfilePtr,"%f\n",artist[i].booking[b].rate.foreignRate);
+            }
+        }
+    }
+    fclose(ArtistfilePtr);
+}
+//READING FROM FILES NOT WORKING
+void readRec(){
+    printf("HI\n");
+    ArtistfilePtr=fopen("artist_data.txt","r");
+    printf("HI\n");
+    if(ArtistfilePtr==NULL){
+        printf("The file is not opened yet.\n");
+    }else{
+        printf("HI\n");
+        while(!feof(ArtistfilePtr)){
+            fscanf(ArtistfilePtr,"%[^=]s= %[^=]s= %d %f %ld %f ",artist[acount].stageName,artist[acount].realName,
+                   artist[acount].accountNum,artist[acount].accountBal,artist[acount].telephone,artist[acount].earningPerYr);
+            while(fgetc(ArtistfilePtr)!= '\n'){
+            fscanf(ArtistfilePtr,"%d %c %d %d %d %[^=]s= %[^=]s= %[^=]s= %[^=]s=",
+                   artist[acount].booking[bcount[acount]].bookingNum,artist[acount].booking[bcount[acount]].type,
+                    artist[acount].booking[bcount[acount]].theDate.day,artist[acount].booking[bcount[acount]].theDate.month,artist[acount].booking[bcount[acount]].theDate.year,
+                    artist[acount].booking[bcount[acount]].hotel,artist[acount].booking[bcount[acount]].location,
+                    artist[acount].booking[bcount[acount]].guide,artist[acount].booking[bcount[acount]].flightInfo);
+                    bcount[acount]++;
+            }
+            acount++;
+            printf("Reading data into structure\n");
+        }
+        printf("HIdone\n");
+    }
+    fclose(ArtistfilePtr);
+
+}
