@@ -437,10 +437,37 @@ void delete_artist(){
 
 };
 void search_artist(){
-
+    char temp_artist[20];
+    int counter;
+    fflush(stdin);
+    printf("Enter the Artist(stagename) you want to search: ");
+    gets(temp_artist);
+    pos = find_artist(temp_artist);
+    if(pos == -1){
+        printf("No artist found with that artist name");
+    }else{
+        fflush(stdin);
+        printf("Artist StageName:%s\nArtist RealName:%s\nArtist Tele#:%d\n",artist[pos].stageName,artist[pos].realName,artist[pos].telephone);
+        printf("Artist Account #:%d\nArtist Acc Balance:%.f\nArtist earning per year:%.f\n",artist[pos].accountNum,artist[pos].accountBal,artist[pos].earningPerYr);
+        printf("*****BOOKING INFORMATION*****\n");
+        for(counter=0;counter<bcount[pos];counter++){
+            printf("Artist Booking #:%d\nArtist Booking location:%s\n",artist[pos].booking[counter].bookingNum,artist[pos].booking[counter].location);
+            printf("Artist Hotel:%s\nArtist flight info:%s\n",artist[pos].booking[counter].hotel,artist[pos].booking[counter].flightInfo);
+            printf("Artist Booking date(day month year): %d %d %d\n",artist[pos].booking[counter].theDate.day,artist[pos].booking[counter].theDate.month,artist[pos].booking[counter].theDate.year);
+            printf("Artist Booking type-(L)ocal or (O)verseas: %c\nArtist Booking Guide:%s\n",artist[pos].booking[counter].type,artist[pos].booking[counter].guide);
+            if(artist[pos].booking[counter].type == 'L')
+                printf("Artist Booking Rate: %.f\n",artist[pos].booking[counter].rate.localRate);
+            if(artist[pos].booking[counter].type == 'O')
+                printf("Artist Booking Rate: %.f\n",artist[pos].booking[counter].rate.foreignRate);
+        }
+        printf("*****Foundation Information*****\n");
+        printf("Artist Foundation Acc #:%d\n",artist[pos].foundation.fAccountNum);
+        printf("Artist Foundation Balance:%.f\n",artist[pos].foundation.balance);
+        printf("Artist Foundation Major Charity:%s\n",artist[pos].foundation.majorCurCharity);
+    }
 };
 void generate_report(){
-
+    printf("What type of report: 1)yearly earning for each artist 2)revenue in each foundation 3)")
 
 };
 
