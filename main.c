@@ -37,7 +37,7 @@ typedef struct{
     char realName[20];
     int accountNum;
     float accountBal;
-    long int telephone;
+    int telephone;
     float earningPerYr;
     Bookings booking[BOOK_MAX];
     Foundation foundation;
@@ -179,8 +179,6 @@ void add_artist(){
     scanf("%f",&artist[acount].accountBal);
     printf("Enter Artist's telephone #: ");
     scanf("%ld",&artist[acount].telephone);
-    //printf("Enter Artist's earningPerYr: $"); going to calculate this from the rate of all bookings
-    //scanf("%f",&artist[acount].earningPerYr);
     printf("*****ARTIST'S BOOKING INFO*****\n");
     printf("How many bookings for this artist: ");
     scanf("%d",&a);
@@ -245,7 +243,8 @@ void add_artist(){
     printf("Enter Artist's Foundation Account Balance: ");
     scanf("%f",&artist[acount].foundation.balance);
     printf("Enter Artist's Foundation majorCurCharity: ");
-    scanf("%d",&artist[acount].foundation.majorCurCharity);
+    fflush(stdin);
+    gets(artist[acount].foundation.majorCurCharity);
     acount+=1;
 };
 int find_artist(char a[30]){
@@ -288,7 +287,7 @@ void update_artist(){
             printf("Enter Artist's accountBal: ");
             scanf("%f",&artist[pos].accountBal);
             printf("Enter Artist's telephone #: ");
-            scanf("%ld",&artist[pos].telephone);
+            scanf("%d",&artist[pos].telephone);
         }else if(choice2 == 'B'){
             printf("Enter Booking number for booking you want to update: ");
             scanf("%d",&temp_bnum);
@@ -361,7 +360,7 @@ void display_all_artist(){
         printf("Artist Account #:%d\nArtist Acc Balance:%.f\nArtist earning per year:%.f\n",artist[a].accountNum,artist[a].accountBal,artist[a].earningPerYr);
         printf("*****BOOKING INFORMATION*****\n");
         for(counter=0;counter<bcount[a];counter++){
-            printf("Artist Booking #:%d\nArtist Booking location%s\n",artist[a].booking[counter].bookingNum,artist[a].booking[counter].location);
+            printf("Artist Booking #:%d\nArtist Booking location:%s\n",artist[a].booking[counter].bookingNum,artist[a].booking[counter].location);
             printf("Artist Hotel:%s\nArtist flight info:%s\n",artist[a].booking[counter].hotel,artist[a].booking[counter].flightInfo);
             printf("Artist Booking date(day month year): %d %d %d\n",artist[a].booking[counter].theDate.day,artist[a].booking[counter].theDate.month,artist[a].booking[counter].theDate.year);
             printf("Artist Booking type-(L)ocal or (O)verseas: %c\nArtist Booking Guide:%s\n",artist[a].booking[counter].type,artist[a].booking[counter].guide);
@@ -379,6 +378,7 @@ void display_all_artist(){
 };
 
 void delete_artist(){
+    fflush(stdin);
     int a;
     int counter;
     char temp_artist[20];
@@ -409,6 +409,7 @@ void delete_artist(){
                     artist[a].booking[counter].type=artist[a+1].booking[counter].type;
                     strcpy(artist[a].booking[bcount[a]].guide,artist[a+1].booking[counter].guide);
                     artist[a].booking[counter].rate=artist[a+1].booking[counter].rate;
+                bcount[acount]--;
                 }
             }else if(bcount[a]>bcount[a+1]){
                 for(counter=0;counter<bcount[a];counter++){
@@ -422,7 +423,9 @@ void delete_artist(){
                     artist[a].booking[counter].type=artist[a+1].booking[counter].type;
                     strcpy(artist[a].booking[bcount[a]].guide,artist[a+1].booking[counter].guide);
                     artist[a].booking[counter].rate=artist[a+1].booking[counter].rate;
+                bcount[acount]--;
                 }
+
             }
         printf("*****Foundation Information*****\n");
             artist[a].foundation.fAccountNum=artist[a+1].foundation.fAccountNum;
@@ -430,6 +433,7 @@ void delete_artist(){
             strcpy(artist[a].foundation.majorCurCharity,artist[a+1].foundation.majorCurCharity);
         }
     }
+    acount--;
 
 };
 void search_artist(){
@@ -448,8 +452,9 @@ void storeRec(){
 	}
 	else{
         for(i=0;i<acount;i++){
-            fprintf(ArtistfilePtr,"%s= %s= %d %f %ld %f ",artist[i].stageName,artist[i].realName,artist[i].accountNum,
+            fprintf(ArtistfilePtr,"%s= %s= %d %f %d %f ",artist[i].stageName,artist[i].realName,artist[i].accountNum,
                     artist[i].accountBal,artist[i].telephone,artist[i].earningPerYr);
+            fprintf(ArtistfilePtr,"%d %f %s= ",artist[i].foundation.fAccountNum,artist[i].foundation.balance,artist[i].foundation.majorCurCharity);
             printf("Writing data to file\n");
             for(b=0;b<bcount[i];b++){
                 fprintf(ArtistfilePtr,"%d %c %d %d %d %s= %s= %s= %s= ",artist[i].booking[b].bookingNum,artist[i].booking[b].type,
@@ -457,38 +462,41 @@ void storeRec(){
                         artist[i].booking[b].hotel,artist[i].booking[b].location,
                         artist[i].booking[b].guide,artist[i].booking[b].flightInfo);
                 if(artist[i].booking[b].type == 'L')
-                    fprintf(ArtistfilePtr,"%f\n",artist[i].booking[b].rate.localRate);
+                    fprintf(ArtistfilePtr,"%f ",artist[i].booking[b].rate.localRate);
                 else if(artist[i].booking[b].type == 'O')
-                    fprintf(ArtistfilePtr,"%f\n",artist[i].booking[b].rate.foreignRate);
+                    fprintf(ArtistfilePtr,"%f ",artist[i].booking[b].rate.foreignRate);
             }
         }
     }
     fclose(ArtistfilePtr);
 }
-//READING FROM FILES NOT WORKING
+
 void readRec(){
-    printf("HI\n");
     ArtistfilePtr=fopen("artist_data.txt","r");
-    printf("HI\n");
     if(ArtistfilePtr==NULL){
         printf("The file is not opened yet.\n");
     }else{
         printf("HI\n");
-        while(!feof(ArtistfilePtr)){
-            fscanf(ArtistfilePtr,"%[^=]s= %[^=]s= %d %f %ld %f ",artist[acount].stageName,artist[acount].realName,
-                   artist[acount].accountNum,artist[acount].accountBal,artist[acount].telephone,artist[acount].earningPerYr);
-            while(fgetc(ArtistfilePtr)!= '\n'){
-            fscanf(ArtistfilePtr,"%d %c %d %d %d %[^=]s= %[^=]s= %[^=]s= %[^=]s=",
-                   artist[acount].booking[bcount[acount]].bookingNum,artist[acount].booking[bcount[acount]].type,
-                    artist[acount].booking[bcount[acount]].theDate.day,artist[acount].booking[bcount[acount]].theDate.month,artist[acount].booking[bcount[acount]].theDate.year,
-                    artist[acount].booking[bcount[acount]].hotel,artist[acount].booking[bcount[acount]].location,
-                    artist[acount].booking[bcount[acount]].guide,artist[acount].booking[bcount[acount]].flightInfo);
+        do{
+            fscanf(ArtistfilePtr,"%[^=]= %[^=]= %d %f %ld %f ",&artist[acount].stageName,&artist[acount].realName,
+                   &artist[acount].accountNum,&artist[acount].accountBal,&artist[acount].telephone,&artist[acount].earningPerYr);
+            fscanf(ArtistfilePtr,"%d %f %[^=]= ",&artist[acount].foundation.fAccountNum,&artist[acount].foundation.balance,
+                   &artist[acount].foundation.majorCurCharity);
+            while(!feof(ArtistfilePtr)){
+                    fscanf(ArtistfilePtr,"%d %c %d %d %d %[^=]= %[^=]= %[^=]= %[^=]= ",
+                        &artist[acount].booking[bcount[acount]].bookingNum,&artist[acount].booking[bcount[acount]].type,
+                        &artist[acount].booking[bcount[acount]].theDate.day,&artist[acount].booking[bcount[acount]].theDate.month,&artist[acount].booking[bcount[acount]].theDate.year,
+                        &artist[acount].booking[bcount[acount]].hotel,&artist[acount].booking[bcount[acount]].location,
+                        &artist[acount].booking[bcount[acount]].guide,&artist[acount].booking[bcount[acount]].flightInfo);
+                    if(artist[acount].booking[bcount[acount]].type == 'L')
+                        fscanf(ArtistfilePtr,"%f ",&artist[acount].booking[bcount[acount]].rate.localRate);
+                    if(artist[acount].booking[bcount[acount]].type == 'O')
+                        fscanf(ArtistfilePtr,"%f ",&artist[acount].booking[bcount[acount]].rate.foreignRate);
                     bcount[acount]++;
             }
             acount++;
             printf("Reading data into structure\n");
-        }
-        printf("HIdone\n");
+        }while(!feof(ArtistfilePtr));
     }
     fclose(ArtistfilePtr);
 
