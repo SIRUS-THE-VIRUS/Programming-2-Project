@@ -58,6 +58,10 @@ int main()
     char pname[20];
     int choice;
     int login_attempts = 0;
+    printf("Welcome... 1)Create account 2)Continue");
+    scanf("%d",&choice);
+    if(choice == 1)
+        create_account();
     printf("0)Manager\n1)Clerk\n=======>>>");
     scanf("%d",&whoami);
     fflush(stdin);
@@ -94,10 +98,8 @@ int validate_login(char *uname, char *passwd,int a){
     while(!feof(LogindataPtr)){
         fscanf(LogindataPtr,"%s %s",uname2,pname2);
         if(strcmp(uname2,uname)==0 && strcmp(pname2,passwd)==TRUE){
-                printf("hi\n");
             return TRUE;
         }else{
-            printf("no\n");
             return FALSE;
         }
     }
@@ -467,7 +469,7 @@ void search_artist(){
     }
 };
 void generate_report(){
-    printf("What type of report: 1)yearly earning for each artist 2)revenue in each foundation 3)")
+    printf("What type of report: 1)yearly earning for each artist 2)revenue in each foundation 3)");
 
 };
 
@@ -503,7 +505,6 @@ void readRec(){
     if(ArtistfilePtr==NULL){
         printf("The file is not opened yet.\n");
     }else{
-        printf("HI\n");
         do{
             fscanf(ArtistfilePtr,"%[^=]= %[^=]= %d %f %ld %f ",&artist[acount].stageName,&artist[acount].realName,
                    &artist[acount].accountNum,&artist[acount].accountBal,&artist[acount].telephone,&artist[acount].earningPerYr);
@@ -526,5 +527,36 @@ void readRec(){
         }while(!feof(ArtistfilePtr));
     }
     fclose(ArtistfilePtr);
+
+}
+void create_account(){
+    int pin;
+    char whoami;
+    char pname[10],pname2[10],uname[10];
+    printf("Enter administrator PIN: ");
+    scanf("%d",&pin);
+    if(pin==6969){
+        fflush(stdin);
+        printf("Type of account (M)anager/(C)lerk: ");
+        scanf("%c",&whoami);
+        fflush(stdin);
+        printf("Enter a username: ");
+        gets(uname);
+        printf("Enter password: ");
+        gets(pname);
+        printf("confirm Password: ");
+        gets(pname2);
+        if(strcmp(pname,pname2)==0){
+            if(whoami == 'M'){
+                LogindataPtr = fopen("Manager_Password.bin","wb");
+                fprintf(LogindataPtr,"%s %s",uname,pname);
+                fclose(LogindataPtr);
+            }else if(whoami == 'C'){
+                LogindataPtr = fopen("Clerk_Password.bin","rb");
+                fprintf(LogindataPtr,"%s %s",uname,pname);
+                fclose(LogindataPtr);
+            }
+        }
+    }
 
 }
