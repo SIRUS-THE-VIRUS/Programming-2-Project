@@ -97,13 +97,11 @@ int validate_login(char *uname, char *passwd,int a){
         LogindataPtr = fopen("Clerk_Password.bin","rb");
     }
     while(!feof(LogindataPtr)){
-        fscanf(LogindataPtr,"%s %s",uname2,pname2);
-        if(strcmp(uname2,uname)==0 && strcmp(pname2,passwd)==TRUE){
+        fscanf(LogindataPtr,"%s %s",&uname2,&pname2);
+        if(strcmp(uname2,uname)==0 && strcmp(pname2,passwd)==TRUE)
             return TRUE;
-        }else{
-            return FALSE;
-        }
     }
+    return FALSE;
 };
 int full_menu(){
     int a;
@@ -532,12 +530,14 @@ void create_account(){
         gets(pname2);
         if(strcmp(pname,pname2)==0){
             if(whoami == 'M'){
-                LogindataPtr = fopen("Manager_Password.bin","wb");
+                LogindataPtr = fopen("Manager_Password.bin","ab");
                 fprintf(LogindataPtr,"%s %s",uname,pname);
+                fprintf(LogindataPtr,"\n");
                 fclose(LogindataPtr);
             }else if(whoami == 'C'){
-                LogindataPtr = fopen("Clerk_Password.bin","rb");
+                LogindataPtr = fopen("Clerk_Password.bin","ab");
                 fprintf(LogindataPtr,"%s %s",uname,pname);
+                fprintf(LogindataPtr,"\n");
                 fclose(LogindataPtr);
             }
         }
