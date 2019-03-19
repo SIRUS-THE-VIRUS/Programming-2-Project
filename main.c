@@ -1,50 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
-#define MAX_ART 20
-#define BOOK_MAX 15
+#include "Structure.h"
 
-typedef union{
-    float localRate;
-    float foreignRate;
-}Rate;
-
-typedef struct{
-    int day;
-    int month;
-    int year;
-}Date;
-
-typedef struct{
-    int bookingNum;
-    char type;
-    Date theDate;
-    Rate rate;
-    char hotel[20];
-    char location[20];
-    char guide[20];
-    char flightInfo[20];
-}Bookings;
-
-typedef struct{
-    int fAccountNum;
-    float balance;
-    char majorCurCharity[20];
-}Foundation;
-
-
-typedef struct{
-    char stageName[20];
-    char realName[20];
-    int accountNum;
-    float accountBal;
-    int telephone;
-    float earningPerYr;
-    Bookings booking[BOOK_MAX];
-    Foundation foundation;
-}Artists;
 Artists artist[MAX_ART];
 
-enum choice {TRUE,FALSE};
 FILE *ArtistfilePtr;
 FILE *bookingPtr;
 FILE *LogindataPtr;
@@ -52,44 +11,7 @@ int whoami;
 int acount=0;
 int bcount[MAX_ART];
 int pos;
-int main()
-{
-    readRec();
-    char uname[20];
-    char pname[20];
-    int choice;
-    int login_attempts = 0;
-    do{
-    printf("Welcome... 1)Create account 2)Continue : ");
-    scanf("%d",&choice);
-    if(choice == 1)
-        create_account();
-    }while(choice !=1 && choice!=2);
-    printf("0)Manager\n1)Clerk\n=======>>> ");
-    scanf("%d",&whoami);
-    fflush(stdin);
-    while(login_attempts!=3){
-    printf("Enter the Username: ");
-    gets(uname);
-    printf("Enter the Password: ");
-    gets(pname);
-    if(validate_login(uname,pname,whoami)== TRUE){
-        while(choice != 7){
-        choice = full_menu();
-        run(choice);
-        }
-        exit(TRUE);
-    }else{
-        login_attempts+=1;
-        if(login_attempts==3){
-            printf("You tried to login too many times\nConnection terminated\n");
-            exit(TRUE);
-        }
-    }
-    }
 
-    return 0;
-}
 int validate_login(char *uname, char *passwd,int a){
     char uname2[20];
     char pname2[20];
@@ -616,4 +538,43 @@ void create_account(){
         }
     }
 
+}
+
+int main()
+{
+    readRec();
+    char uname[20];
+    char pname[20];
+    int choice;
+    int login_attempts = 0;
+    do{
+    printf("Welcome... 1)Create account 2)Continue : ");
+    scanf("%d",&choice);
+    if(choice == 1)
+        create_account();
+    }while(choice !=1 && choice!=2);
+    printf("0)Manager\n1)Clerk\n=======>>> ");
+    scanf("%d",&whoami);
+    fflush(stdin);
+    while(login_attempts!=3){
+    printf("Enter the Username: ");
+    gets(uname);
+    printf("Enter the Password: ");
+    gets(pname);
+    if(validate_login(uname,pname,whoami)== TRUE){
+        while(choice != 7){
+        choice = full_menu();
+        run(choice);
+        }
+        exit(TRUE);
+    }else{
+        login_attempts+=1;
+        if(login_attempts==3){
+            printf("You tried to login too many times\nConnection terminated\n");
+            exit(TRUE);
+        }
+    }
+    }
+
+    return 0;
 }
