@@ -44,7 +44,7 @@ typedef struct{
 }Artists;
 Artists artist[MAX_ART];
 
-enum response {TRUE,FALSE};
+enum choice {TRUE,FALSE};
 FILE *ArtistfilePtr;
 FILE *bookingPtr;
 FILE *LogindataPtr;
@@ -59,11 +59,13 @@ int main()
     char pname[20];
     int choice;
     int login_attempts = 0;
-    printf("Welcome... 1)Create account 2)Continue");
+    do{
+    printf("Welcome... 1)Create account 2)Continue : ");
     scanf("%d",&choice);
     if(choice == 1)
         create_account();
-    printf("0)Manager\n1)Clerk\n=======>>>");
+    }while(choice !=1 && choice!=2);
+    printf("0)Manager\n1)Clerk\n=======>>> ");
     scanf("%d",&whoami);
     fflush(stdin);
     while(login_attempts!=3){
@@ -93,8 +95,12 @@ int validate_login(char *uname, char *passwd,int a){
     char pname2[20];
     if(a==0){
         LogindataPtr = fopen("Manager_Password.bin","rb");
+        if(LogindataPtr==NULL)
+            printf("There was a problem opening the file");
     }else if(a==1){
         LogindataPtr = fopen("Clerk_Password.bin","rb");
+        if(LogindataPtr==NULL)
+            printf("There was a problem opening the file");
     }
     while(!feof(LogindataPtr)){
         fscanf(LogindataPtr,"%s %s",&uname2,&pname2);
@@ -146,7 +152,7 @@ void run(int a){
         if(whoami==TRUE){
             delete_artist();
         }else if(whoami==FALSE){
-            printf("You have entered a restricted area");
+            printf("You have entered a restricted area\n");
             system("pause");
         }
         break;
@@ -470,7 +476,50 @@ void search_artist(){
     }
 };
 void generate_report(){
-    printf("What type of report: 1)yearly earning for each artist 2)revenue in each foundation 3)");
+    int type,i;
+    printf("What type of report: \n1)yearly earning for each artist \n2)revenue in each foundation and there Charity\n=====>>>>>");
+    scanf("%d",&type);
+    if(type == 1){
+        FILE *earningPtr;
+        earningPtr=fopen("earningreport.txt","w");
+        if(earningPtr == NULL){
+            printf("file was not opened \n");
+        }else{
+            for(i=0;i<acount;i++){
+                printf("*********************************************\n");
+                printf("Artist StageName: %s\nArtist RealName: %s\n",artist[i].stageName,artist[i].realName);
+                printf("Artist earning per year:%.f\n",artist[i].earningPerYr);
+                printf("*********************************************\n");
+                fprintf(earningPtr,"*********************************************\n");
+                fprintf(earningPtr,"Artist StageName: %s\nArtist RealName: %s\n",artist[i].stageName,artist[i].realName);
+                fprintf(earningPtr,"Artist earning per year:%.f\n",artist[i].earningPerYr);
+                fprintf(earningPtr,"*********************************************\n");
+            }
+            fclose(earningPtr);
+        }
+    }else if(type == 2){
+        FILE *foundationRevPtr;
+        foundationRevPtr = fopen("foundation_revenue.txt","w");
+        if(foundationRevPtr == NULL){
+            printf("Error: A File was not opened");
+        }else{
+            for(i=0;i<acount;i++){
+                printf("*********************************************\n");
+                printf("Artist Foundation Acc #:%d\n",artist[i].foundation.fAccountNum);
+                printf("Artist Foundation Balance:%.f\n",artist[i].foundation.balance);
+                printf("Artist Foundation Major Charity:%s\n",artist[i].foundation.majorCurCharity);
+                printf("*********************************************\n");
+                fprintf(foundationRevPtr,"*********************************************\n");
+                fprintf(foundationRevPtr,"Artist Foundation Acc #:%d\n",artist[i].foundation.fAccountNum);
+                fprintf(foundationRevPtr,"Artist Foundation Balance:%.f\n",artist[i].foundation.balance);
+                fprintf(foundationRevPtr,"Artist Foundation Major Charity:%s\n",artist[i].foundation.majorCurCharity);
+                fprintf(foundationRevPtr,"*********************************************\n");
+            }
+            fclose(foundationRevPtr);
+
+        }
+
+    }
 
 };
 
@@ -478,7 +527,7 @@ void storeRec(){
     int i,b;
     ArtistfilePtr=fopen("artist_data.bin","wb");
     bookingPtr = fopen("Bcount.txt","w");
-	if(ArtistfilePtr==NULL){
+	if(ArtistfilePtr==NULL || bookingPtr==NULL){
 		printf("The file is not opened.\n");
 	}
 	else{
@@ -494,7 +543,8 @@ void readRec(){
     int i;
     ArtistfilePtr=fopen("artist_data.bin","rb");
     bookingPtr = fopen("Bcount.txt","r");
-    if(ArtistfilePtr==NULL){
+
+    if(ArtistfilePtr==NULL || bookingPtr == NULL){
         printf("The file is not opened yet.\n");
     }else{
 
@@ -502,7 +552,7 @@ void readRec(){
                 fread(&artist[acount],sizeof(Artists),1,ArtistfilePtr);
 
             acount++;
-            printf("Reading data into structure\n");
+            //printf("Reading data into structure\n");
         };
         acount--;
     }
@@ -512,9 +562,9 @@ void readRec(){
 
 }
 void create_account(){
-    int pin;
+    int pin,flag=FALSE;
     char whoami;
-    char pname[10],pname2[10],uname[10];
+    char pname[10],pname2[10],uname[10],uname2[10];
     printf("Enter administrator PIN: ");
     scanf("%d",&pin);
     if(pin==6969){
@@ -522,8 +572,23 @@ void create_account(){
         printf("Type of account (M)anager/(C)lerk: ");
         scanf("%c",&whoami);
         fflush(stdin);
+        do{
         printf("Enter a username: ");
         gets(uname);
+            if(whoami=='M'){
+                LogindataPtr = fopen("Manager_Password.bin","rb");
+            }else if(whoami=='C'){
+                LogindataPtr = fopen("Clerk_Password.bin","rb");
+            }
+            while(!feof(LogindataPtr)){
+                fscanf(LogindataPtr,"%s",&uname2);
+                if(strcmp(uname2,uname)==0){
+                    printf("That username is already taken\n");
+                    flag=TRUE;
+                    break;
+                }else{flag=FALSE;}
+            }
+        }while(flag ==TRUE);
         printf("Enter password: ");
         gets(pname);
         printf("confirm Password: ");
@@ -531,14 +596,22 @@ void create_account(){
         if(strcmp(pname,pname2)==0){
             if(whoami == 'M'){
                 LogindataPtr = fopen("Manager_Password.bin","ab");
+                if(LogindataPtr==NULL){
+                    printf("File was not opened");
+                }else{
                 fprintf(LogindataPtr,"%s %s",uname,pname);
                 fprintf(LogindataPtr,"\n");
                 fclose(LogindataPtr);
+                }
             }else if(whoami == 'C'){
                 LogindataPtr = fopen("Clerk_Password.bin","ab");
+                if(LogindataPtr==NULL){
+                    printf("File was not opened");
+                }else{
                 fprintf(LogindataPtr,"%s %s",uname,pname);
                 fprintf(LogindataPtr,"\n");
                 fclose(LogindataPtr);
+                }
             }
         }
     }
