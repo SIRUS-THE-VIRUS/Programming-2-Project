@@ -101,21 +101,30 @@ void run(int a){
 };
 
 void add_artist(){
-    int a;
+    int a,i;
     int t;
     int counter;
+    char tempname[20];
     fflush(stdin);
     printf("*****ARTISTS INFORMATION*****\n");
     printf("Enter Artist's StageName:");
     gets(artist[acount].stageName);
+    strcpy(tempname,artist[acount].stageName);
+    for(i=0;i<acount;i++){
+        if(strcmp(tempname,artist[i].stageName)==TRUE){
+            printf("This stage name is already in the system");
+            system("pause");
+            add_artist();
+        }
+    }
     printf("Enter Artist's RealName: ");
     gets(artist[acount].realName);
     printf("Enter Artist's accountNum: ");
     scanf("%d",&artist[acount].accountNum);
     printf("Enter Artist's accountBal: ");
     scanf("%f",&artist[acount].accountBal);
-    printf("Enter Artist's telephone #: ");
-    scanf("%ld",&artist[acount].telephone);
+    printf("Enter Artist's telephone #:(876) ");
+    scanf("%d",&artist[acount].telephone);
     printf("*****ARTIST'S BOOKING INFO*****\n");
     printf("How many bookings for this artist: ");
     scanf("%d",&a);
@@ -173,6 +182,7 @@ void add_artist(){
     }
     }else{
         printf("This artist can only have a maximum of 15 bookings\n");
+        system("pause");
     }
     printf("*****ARTIST'S FOUNDATION INFO*****\n");
     printf("Enter Artist's Foundation Account Number: ");
