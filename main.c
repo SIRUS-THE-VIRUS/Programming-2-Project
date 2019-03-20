@@ -17,12 +17,20 @@ int validate_login(char *uname, char *passwd,int a){
     char pname2[20];
     if(a==0){
         LogindataPtr = fopen("Manager_Password.bin","rb");
-        if(LogindataPtr==NULL)
-            printf("There was a problem opening the file");
+        if(LogindataPtr==NULL){
+            printf("Error: No file found... If this is your first time... create an account\n");
+            system("pause");
+            system("cls");
+            main();
+        }
     }else if(a==1){
         LogindataPtr = fopen("Clerk_Password.bin","rb");
-        if(LogindataPtr==NULL)
-            printf("There was a problem opening the file");
+        if(LogindataPtr==NULL){
+            printf("Error: No file found... If this is your first time... create an account\n");
+            system("pause");
+            system("cls");
+            main();
+        }
     }
     while(!feof(LogindataPtr)){
         fscanf(LogindataPtr,"%s %s",&uname2,&pname2);
@@ -571,6 +579,7 @@ int main()
         login_attempts+=1;
         if(login_attempts==3){
             printf("You tried to login too many times\nConnection terminated\n");
+            system("pause");
             exit(TRUE);
         }
     }
