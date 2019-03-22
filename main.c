@@ -31,7 +31,7 @@ int validate_login(char *uname, char *passwd,int a){
         LogindataPtr = fopen("Manager_Password.bin","rb");
         //these checks will only be true if the user tries to login before creating a single account
         if(LogindataPtr==NULL){
-            printf("Error: No file found... If this is your first time... create an account\n");
+            printf("Error: No file was found... If this is your first time...You would need to create an account\n\a");
             system("pause");
             system("cls");
             main();
@@ -39,7 +39,7 @@ int validate_login(char *uname, char *passwd,int a){
     }else if(a==1){
         LogindataPtr = fopen("Clerk_Password.bin","rb");
         if(LogindataPtr==NULL){
-            printf("Error: No file found... If this is your first time... create an account\n");
+            printf("Error: No file was found... If this is your first time...You would need to create an account\n\a");
             system("pause");
             system("cls");
             main();
@@ -57,22 +57,22 @@ int full_menu(){
     int a;
     fflush(stdin);
     printf(" \n");printf(" ");printf(" ");printf(" ");printf(" ");printf(" ");printf(" ");printf(" ");
-    printf("\t\t\t\t    Company\n");
-    printf("\t\t\tArtist Management System\n");
+    printf("\t\t\t\t+_+_+_+_+_+_+BIGWORM MUSIC AND RECORD LABEL COMPANY+_+_+_+_+_+\n");
+    printf("\t\t\t+_+_+_+_+_+_+BIGWORM Artist Management System+_+_+_+_+_+_+\n");
     printf(" ");
-    printf("\t\t\t+=============================+\n");
-    printf("\t\t\t|                             |\n");
-    printf("\t\t\t|   1. Add   Artist           |\n");
-    printf("\t\t\t|   2. Update  Artist         |\n");
-    printf("\t\t\t|   3. Display All Artist     |\n");
-    printf("\t\t\t|   4. Delete Artist          |\n");
-    printf("\t\t\t|   5. Search Artist          |\n");
-    printf("\t\t\t|   6. Generate Report        |\n");
-    printf("\t\t\t|   7. Exit                   |\n");
-    printf("\t\t\t|                             |\n");
-    printf("\t\t\t+=============================+\n");
-    printf("\t\t\t|   Select an Option [1..7]   |\n");
-    printf("\t\t\t+=============================+\n");
+    printf("\t\t\t\t\t+=============================+\n");
+    printf("\t\t\t\t\t|                             |\n");
+    printf("\t\t\t\t\t|   1. Add Artist             |\n");
+    printf("\t\t\t\t\t|   2. Update Artist          |\n");
+    printf("\t\t\t\t\t|   3. Display All Artist     |\n");
+    printf("\t\t\t\t\t|   4. Delete Artist          |\n");
+    printf("\t\t\t\t\t|   5. Search Artist          |\n");
+    printf("\t\t\t\t\t|   6. Generate Report        |\n");
+    printf("\t\t\t\t\t|   7. Exit                   |\n");
+    printf("\t\t\t\t\t|                             |\n");
+    printf("\t\t\t\t\t+=============================+\n");
+    printf("\t\t\t\t\t|   Select an Option [1..7]   |\n");
+    printf("\t\t\t\t\t+=============================+\n");
     printf("=====================>>> ");
     scanf("%d",&a);
     return a;
@@ -81,21 +81,21 @@ int clerk_menu(){
     int a;
     fflush(stdin);
     printf(" \n");printf(" ");printf(" ");printf(" ");printf(" ");printf(" ");printf(" ");printf(" ");
-    printf("\t\t\t\t    Company\n");
-    printf("\t\t\tArtist Management System\n");
+    printf("\n\t\t\t\t+_+_+_+_+_+_+BIGWORM MUSIC AND RECORD LABEL COMPANY+_+_+_+_+_+\n\n");
+    printf("\t\t\t+_+_+_+_+_+BIGWORM Artist information Gathering+_+_+_+_+_+\n");
     printf(" ");
-    printf("\t\t\t+=============================+\n");
-    printf("\t\t\t|                             |\n");
-    printf("\t\t\t|   1. Add  Artist Booking    |\n");
-    printf("\t\t\t|   2. Update Artist Booking  |\n");
-    printf("\t\t\t|   3. Search Artist info     |\n");
-    printf("\t\t\t|   4. Search Artist Booking  |\n");
-    printf("\t\t\t|   5. Generate Report        |\n");
-    printf("\t\t\t|   6. Exit                   |\n");
-    printf("\t\t\t|                             |\n");
-    printf("\t\t\t+=============================+\n");
-    printf("\t\t\t|   Select an Option [1..7]   |\n");
-    printf("\t\t\t+=============================+\n");
+    printf("\t\t\t\t\t\t\t+=============================+\n");
+    printf("\t\t\t\t\t\t\t|                             |\n");
+    printf("\t\t\t\t\t\t\t|   1. Add Artist Booking     |\n");
+    printf("\t\t\t\t\t\t\t|   2. Update Artist Booking  |\n");
+    printf("\t\t\t\t\t\t\t|   3. Search Artist info     |\n");
+    printf("\t\t\t\t\t\t\t|   4. Search Artist Booking  |\n");
+    printf("\t\t\t\t\t\t\t|   5. Generate Report        |\n");
+    printf("\t\t\t\t\t\t\t|   6. Exit                   |\n");
+    printf("\t\t\t\t\t\t\t|                             |\n");
+    printf("\t\t\t\t\t\t\t+=============================+\n");
+    printf("\t\t\t\t\t\t\t|   Select an Option [1..7]   |\n");
+    printf("\t\t\t\t\t\t\t+=============================+\n");
     printf("=====================>>> ");
     scanf("%d",&a);
     return a;
@@ -108,37 +108,39 @@ void add_artist(){
     int counter;
     char tempname[20];
     fflush(stdin);
-    printf("*****ARTISTS INFORMATION*****\n");
-    printf("Enter Artist's StageName:");
+    printf("\n\t\t\t\t+_+_+_+_+_+_+BIGWORM MUSIC AND RECORD LABEL COMPANY+_+_+_+_+_+\n\n");
+    printf("\t\t\t\+_+_+_+BIGWORN ARTIST INFORMATION+_+_+_+\n");
+    printf("Please enter the Artist's StageName:");
     gets(artist[acount].stageName);
     strcpy(tempname,artist[acount].stageName);
     for(i=0;i<acount;i++){
         if(strcmp(tempname,artist[i].stageName)==TRUE){
-            printf("This stage name is already in the system");
+            printf("\n Am sorry but this stage name is already in the system\a\n");
             system("pause");
+            system("cls");
             add_artist();
         }
     }
-    printf("Enter Artist's RealName: ");
+    printf("Please enter the Artist's RealName: ");
     gets(artist[acount].realName);
-    printf("Enter Artist's accountNum: ");
+    printf("Please enter the Artist's accountNum: ");
     scanf("%d",&artist[acount].accountNum);
-    printf("Enter Artist's accountBal: ");
+    printf("Please enter the Artist's accountBal: ");
     scanf("%f",&artist[acount].accountBal);
-    printf("Enter Artist's telephone #:(876) ");
+    printf("Please enter the Artist's telephone #:(876) ");
     scanf("%d",&artist[acount].telephone);
     printf("*****ARTIST'S BOOKING INFO*****\n");
     printf("How many bookings for this artist: ");
     scanf("%d",&a);
     if(bcount[acount]< BOOK_MAX){
     for(counter=0;counter<a;counter++){
-        printf("Enter Artist's bookingNum:");
+        printf("Please enter the Artist's bookingNum:");
         scanf("%d",&artist[acount].booking[counter].bookingNum);
-        printf("Enter Artist's booking type (O)versea or (L)ocal: ");
+        printf("Please enter the Artist's booking type (O)versea or (L)ocal: ");
         scanf(" %c",&artist[acount].booking[counter].type);
         int date = FALSE;
         while(date == FALSE && bcount[acount]>=0){
-        printf("Enter Artist's booking Date (Day month year): ");
+        printf("Please enter the Artist's booking Date (Day month year): ");
         scanf("%d %d %d",&artist[acount].booking[counter].theDate.day,&artist[acount].booking[counter].theDate.month,&artist[acount].booking[counter].theDate.year);
         if(artist[acount].booking[counter].type == 'O'){
             //for loop testing if the date entered is already taken for an overseas booking
@@ -146,7 +148,7 @@ void add_artist(){
                 if(artist[acount].booking[counter].theDate.day == artist[acount].booking[t].theDate.day &&
                    artist[acount].booking[counter].theDate.month == artist[acount].booking[t].theDate.month &&
                    artist[acount].booking[counter].theDate.year == artist[acount].booking[t].theDate.year){
-                   printf("That date is already taken");
+                   printf("That date is already taken\n\a");
                    date = FALSE;
                    }else if(artist[acount].booking[counter].theDate.day == (artist[acount].booking[t].theDate.day - 2) ||
                    artist[acount].booking[counter].theDate.day == (artist[acount].booking[t].theDate.day - 1) ||
@@ -154,7 +156,7 @@ void add_artist(){
                    artist[acount].booking[counter].theDate.day == (artist[acount].booking[t].theDate.day + 2) &&
                    artist[acount].booking[counter].theDate.month == artist[acount].booking[t].theDate.month &&
                    artist[acount].booking[counter].theDate.year == artist[acount].booking[t].theDate.year){
-                   printf("That date is too close to another booking date");
+                   printf("That date is too close to another booking date\n\a");
                    date = FALSE;
                    }else{date = TRUE;break;}
 
@@ -164,20 +166,20 @@ void add_artist(){
             date = TRUE;
         }
         fflush(stdin);
-        printf("Enter Artist's booking hotel: ");
+        printf("Please enter the Artist's booking hotel: ");
         gets(artist[acount].booking[counter].hotel);
-        printf("Enter Artist's booking location(address): ");
+        printf("Please enter the Artist's booking location(address): ");
         gets(artist[acount].booking[counter].location);
-        printf("Enter Artist's booking guide: ");
+        printf("Please enter the Artist's booking guide: ");
         gets(artist[acount].booking[counter].guide);
-        printf("Enter Artist's Booking flightInfo: ");
+        printf("Please enter the Artist's Booking flightInfo: ");
         gets(artist[acount].booking[counter].flightInfo);
         if(artist[acount].booking[counter].type == 'L'){
-            printf("Enter Artist's Booking localRate (enter zero for voluntary): ");
+            printf("Please enter the Artist's Booking localRate (enter zero for voluntary): ");
             scanf("%f",&artist[acount].booking[counter].rate.localRate);
             artist[acount].earningPerYr+=artist[acount].booking[counter].rate.localRate;
         }else if(artist[acount].booking[counter].type == 'O'){
-            printf("Enter Artist's Booking foreignRate(including hotel,plane fair for all members): ");
+            printf("Please enter the Artist's Booking foreignRate(including hotel,plane fair for all members): ");
             scanf("%f",&artist[acount].booking[counter].rate.foreignRate);
             artist[acount].earningPerYr+=artist[acount].booking[counter].rate.foreignRate;
         }
@@ -188,11 +190,11 @@ void add_artist(){
         system("pause");
     }
     printf("*****ARTIST'S FOUNDATION INFO*****\n");
-    printf("Enter Artist's Foundation Account Number: ");
+    printf("Please enter the Artist's Foundation Account Number: ");
     scanf("%d",&artist[acount].foundation.fAccountNum);
-    printf("Enter Artist's Foundation Account Balance: ");
+    printf("Please enter the Artist's Foundation Account Balance: ");
     scanf("%f",&artist[acount].foundation.balance);
-    printf("Enter Artist's Foundation majorCurCharity: ");
+    printf("Please enter the Artist's Foundation majorCurCharity: ");
     fflush(stdin);
     gets(artist[acount].foundation.majorCurCharity);
     acount+=1;
@@ -217,21 +219,21 @@ void add_booking(){
     int a,t,counter;
     char temp_artist[20];
     fflush(stdin);
-    printf("Enter Artist(stage name) you want to add booking for: ");
+    printf("Please enter the Artist(stage name) you want to add booking for: ");
     gets(temp_artist);
     pos = find_artist(temp_artist);
     if(pos == -1){
-        printf("No artist found with that artist name");
+        printf("No artist found with that artist name\n\a");
     }else{
         printf("*****ARTIST'S BOOKING INFO*****\n");
     if(bcount[pos]< BOOK_MAX){
-        printf("Enter Artist's bookingNum:");
+        printf("Please enter the Artist's bookingNum:");
         scanf("%d",&artist[pos].booking[bcount[pos]].bookingNum);
-        printf("Enter Artist's booking type (O)versea or (L)ocal: ");
+        printf("Please enter the Artist's booking type (O)versea or (L)ocal: ");
         scanf(" %c",&artist[pos].booking[bcount[pos]].type);
         int date = FALSE;
         while(date == FALSE && bcount[pos]>=0){
-        printf("Enter Artist's booking Date (Day month year): ");
+        printf("Please enter the Artist's booking Date (Day month year): ");
         scanf("%d %d %d",&artist[pos].booking[bcount[pos]].theDate.day,&artist[pos].booking[bcount[pos]].theDate.month,&artist[pos].booking[bcount[pos]].theDate.year);
         if(artist[pos].booking[bcount[pos]].type == 'O'){
             //for loop testing if the date entered is already taken for an overseas booking
@@ -239,7 +241,7 @@ void add_booking(){
                 if(artist[pos].booking[bcount[pos]].theDate.day == artist[pos].booking[t].theDate.day &&
                    artist[pos].booking[bcount[pos]].theDate.month == artist[pos].booking[t].theDate.month &&
                    artist[pos].booking[bcount[pos]].theDate.year == artist[pos].booking[t].theDate.year){
-                   printf("That date is already taken");
+                   printf("That date is already taken\n\a");
                    date = FALSE;
                    }else if(artist[pos].booking[bcount[pos]].theDate.day == (artist[pos].booking[t].theDate.day - 2) ||
                    artist[pos].booking[bcount[pos]].theDate.day == (artist[pos].booking[t].theDate.day - 1) ||
@@ -247,7 +249,7 @@ void add_booking(){
                    artist[pos].booking[bcount[pos]].theDate.day == (artist[pos].booking[t].theDate.day + 2) &&
                    artist[pos].booking[bcount[pos]].theDate.month == artist[pos].booking[t].theDate.month &&
                    artist[pos].booking[bcount[pos]].theDate.year == artist[pos].booking[t].theDate.year){
-                   printf("That date is too close to another booking date");
+                   printf("That date is too close to another booking date\n\a");
                    date = FALSE;
                    }else{date = TRUE;break;}
 
@@ -257,26 +259,26 @@ void add_booking(){
             date = TRUE;
         }
         fflush(stdin);
-        printf("Enter Artist's booking hotel: ");
+        printf("Please enter the Artist's booking hotel: ");
         gets(artist[pos].booking[bcount[pos]].hotel);
-        printf("Enter Artist's booking location(address): ");
+        printf("Please enter the Artist's booking location(address): ");
         gets(artist[pos].booking[bcount[pos]].location);
-        printf("Enter Artist's booking guide: ");
+        printf("Please enter the Artist's booking guide: ");
         gets(artist[pos].booking[bcount[pos]].guide);
-        printf("Enter Artist's Booking flightInfo: ");
+        printf("Please enter the Artist's Booking flightInfo: ");
         gets(artist[pos].booking[bcount[pos]].flightInfo);
         if(artist[pos].booking[bcount[pos]].type == 'L'){
-            printf("Enter Artist's Booking localRate (enter zero for voluntary): ");
+            printf("Please enter the Artist's Booking localRate (enter zero for voluntary): ");
             scanf("%f",&artist[pos].booking[bcount[pos]].rate.localRate);
             artist[pos].earningPerYr+=artist[pos].booking[bcount[pos]].rate.localRate;
         }else if(artist[pos].booking[bcount[pos]].type == 'O'){
-            printf("Enter Artist's Booking foreignRate(including hotel,plane fair for all members): ");
+            printf("Please enter the Artist's Booking foreignRate(including hotel,plane fair for all members): ");
             scanf("%f",&artist[pos].booking[bcount[pos]].rate.foreignRate);
             artist[pos].earningPerYr+=artist[pos].booking[bcount[pos]].rate.foreignRate;
         }
         bcount[pos]+=1;
     }else{
-        printf("This artist can only have a maximum of 15 bookings\n");
+        printf("This artist can only have a maximum of 15 bookings\n\a");
         system("pause");
     }
     }
@@ -291,45 +293,45 @@ void update_artist(){
     gets(temp_artist);
     pos = find_artist(temp_artist);
     if(pos == -1){
-        printf("No artist found with that artist name");
+        printf("No artist found with that artist name\a");
     }else{
         if(whoami==TRUE)
             printf("What do you want to update: (A)rtist basic info , (B)ooking info , (F)oundation information====>>> ");
         if(whoami==FALSE)
-            printf("Enter B to continue====>>> ");
+            printf("Please enter B to continue====>>> ");
         scanf(" %c",&choice2);
         if(choice2 == 'A' && whoami == TRUE){
             fflush(stdin);
             printf("*****ARTISTS INFORMATION*****\n");
-            printf("Enter Artist's StageName:");
+            printf("Please enter the Artist's StageName:");
             gets(artist[pos].stageName);
-            printf("Enter Artist's RealName: ");
+            printf("Please enter the Artist's RealName: ");
             gets(artist[pos].realName);
-            printf("Enter Artist's accountNum: ");
+            printf("Please enter the Artist's accountNum: ");
             scanf("%d",&artist[pos].accountNum);
-            printf("Enter Artist's accountBal: ");
+            printf("Please enter the Artist's accountBal: ");
             scanf("%f",&artist[pos].accountBal);
-            printf("Enter Artist's telephone #: ");
+            printf("Please enter the Artist's telephone #: ");
             scanf("%d",&artist[pos].telephone);
         }else if(choice2 == 'B'){
-            printf("Enter Booking number for booking you want to update: ");
+            printf("Please enter the Booking number for booking you want to update: ");
             scanf("%d",&temp_bnum);
             temp_bnum = find_booking(temp_bnum);
             if(temp_bnum == -1){
-                printf("That booking number does not exist:\n");
+                printf("That booking number does not exist:\n\a");
             }else if(temp_bnum< 15){
-                printf("Enter Artist's booking type (O)versea or (L)ocal: ");
+                printf("Please enter the Artist's booking type (O)versea or (L)ocal: ");
                 scanf(" %c",&artist[pos].booking[temp_bnum].type);
                 int date = FALSE;
                 while(date == FALSE && bcount[pos]>=0){
-                    printf("Enter Artist's booking Date (Day month year): ");
+                    printf("Please enter the Artist's booking Date (Day month year): ");
                     scanf("%d %d %d",&artist[pos].booking[temp_bnum].theDate.day,&artist[pos].booking[temp_bnum].theDate.month,&artist[pos].booking[temp_bnum].theDate.year);
                     if(artist[pos].booking[temp_bnum].type == 'O'){
                         for(t=0;t<temp_bnum;t++){
                             if(artist[pos].booking[temp_bnum].theDate.day == artist[pos].booking[t].theDate.day &&
                                artist[pos].booking[temp_bnum].theDate.month == artist[pos].booking[t].theDate.month &&
                                artist[pos].booking[temp_bnum].theDate.year == artist[pos].booking[t].theDate.year){
-                               printf("That date is already taken");
+                               printf("That date is already taken\n\a");
                                date = FALSE;
                                }else if(artist[pos].booking[temp_bnum].theDate.day == (artist[pos].booking[t].theDate.day - 2) ||
                                artist[pos].booking[temp_bnum].theDate.day == (artist[pos].booking[t].theDate.day - 1) ||
@@ -337,7 +339,7 @@ void update_artist(){
                                artist[pos].booking[temp_bnum].theDate.day == (artist[pos].booking[t].theDate.day + 2) &&
                                artist[pos].booking[temp_bnum].theDate.month == artist[pos].booking[t].theDate.month &&
                                artist[pos].booking[temp_bnum].theDate.year == artist[pos].booking[t].theDate.year){
-                               printf("That date is too close to another booking date");
+                               printf("That date is too close to another booking date\n\a");
                                date = FALSE;
                                }else{date = TRUE;break;}
 
@@ -347,40 +349,40 @@ void update_artist(){
                         date = TRUE;
                 }
                 fflush(stdin);
-                printf("Enter Artist's booking hotel: ");
+                printf("Please enter the Artist's booking hotel: ");
                 gets(artist[pos].booking[temp_bnum].hotel);
-                printf("Enter Artist's booking location(address): ");
+                printf("Please enter the Artist's booking location(address): ");
                 gets(artist[pos].booking[temp_bnum].location);
-                printf("Enter Artist's booking guide: ");
+                printf("Please enter the Artist's booking guide: ");
                 gets(artist[pos].booking[temp_bnum].guide);
-                printf("Enter Artist's Booking flightInfo: ");
+                printf("Please enter the Artist's Booking flightInfo: ");
                 gets(artist[pos].booking[temp_bnum].flightInfo);
                 if(artist[pos].booking[temp_bnum].type == 'L'){
-                    printf("Enter Artist's Booking localRate (enter zero for voluntary): ");
+                    printf("Please enter the Artist's Booking localRate (enter zero for voluntary): ");
                     scanf("%f",&artist[pos].booking[temp_bnum].rate.localRate);
                     artist[pos].earningPerYr+=artist[pos].booking[temp_bnum].rate.localRate;
                 }else if(artist[pos].booking[temp_bnum].type == 'O'){
-                    printf("Enter Artist's Booking foreignRate(including hotel,plane fair for all members): ");
+                    printf("Please enter the Artist's Booking foreignRate(including hotel,plane fair for all members): ");
                     scanf("%f",&artist[pos].booking[temp_bnum].rate.foreignRate);
                     artist[pos].earningPerYr+=artist[pos].booking[temp_bnum].rate.foreignRate;
                 }
                 temp_bnum+=1;
             }else{
-                printf("This artist can only have a maximum of 15 bookings\n");
+                printf("\nAm sorry but this artist can only have a maximum of 15 bookings\n\a");
             }
 
         }else if(choice2 == 'F' && whoami==TRUE){
             printf("*****ARTIST'S FOUNDATION INFO*****\n");
-            printf("Enter Artist's Foundation Account Number: ");
+            printf("Please enter the Artist's Foundation Account Number: ");
             scanf("%d",&artist[pos].foundation.fAccountNum);
-            printf("Enter Artist's Foundation Account Balance: ");
+            printf("Please enter the Artist's Foundation Account Balance: ");
             scanf("%f",&artist[pos].foundation.balance);
-            printf("Enter Artist's Foundation majorCurCharity: ");
+            printf("Please enter the Artist's Foundation majorCurCharity: ");
             fflush(stdin);
             gets(artist[pos].foundation.majorCurCharity);
         }else{
-            printf("Seems you are trying to do something you don't have permission to do\n");
-            printf("Are you a manager?\n");
+            printf("\nAm sorry but it seems you are trying to do something you don't have permission to do\n");
+            printf("\nAre you a manager?\n\a");
             system("pause");
 
         }
@@ -422,11 +424,11 @@ void delete_artist(){
     int a;
     int counter;
     char temp_artist[20];
-    printf("Enter the Artist(stagename) you want to delete: ");
+    printf("Please enter the Artist(stagename) you want to delete: ");
     gets(temp_artist);
     pos = find_artist(temp_artist);
     if(pos == -1){
-        printf("No artist found with that artist name");
+        printf("\n Am sorry but no artist was found with that artist name\a");
     }else{
         for(a = pos;a<=acount;a++){
             strcpy(artist[a].stageName,artist[a+1].stageName);
@@ -480,11 +482,11 @@ void search_artist(){
     char temp_artist[20];
     int counter;
     fflush(stdin);
-    printf("Enter the Artist(stagename) you want to search: ");
+    printf("Please enter the the Artist(stagename) you want to search: ");
     gets(temp_artist);
     pos = find_artist(temp_artist);
     if(pos == -1){
-        printf("No artist found with that artist name");
+        printf("\nAm sorry but no artist was found with that artist name\a");
     }else{
         fflush(stdin);
         if(whoami == TRUE || choice == 3){
@@ -495,7 +497,7 @@ void search_artist(){
             printf("Artist Booking #:%d\nArtist Booking location:%s\n",artist[pos].booking[counter].bookingNum,artist[pos].booking[counter].location);
             printf("Artist Hotel:%s\nArtist flight info:%s\n",artist[pos].booking[counter].hotel,artist[pos].booking[counter].flightInfo);
             printf("Artist Booking date(day month year): %d %d %d\n",artist[pos].booking[counter].theDate.day,artist[pos].booking[counter].theDate.month,artist[pos].booking[counter].theDate.year);
-            printf("Artist Booking type-(L)ocal or (O)verseas: %c\nArtist Booking Guide:%s\n",artist[pos].booking[counter].type,artist[pos].booking[counter].guide);
+            printf("Artist Booking type-(L)-local or (O)-overseas: %c\nArtist Booking Guide:%s\n",artist[pos].booking[counter].type,artist[pos].booking[counter].guide);
             if(artist[pos].booking[counter].type == 'L')
                 printf("Artist Booking Rate: %.f\n",artist[pos].booking[counter].rate.localRate);
             if(artist[pos].booking[counter].type == 'O')
@@ -522,13 +524,13 @@ void search_artist(){
 };
 void generate_report(){
     int type,i;
-    printf("What type of report: \n1)yearly earning for each artist \n2)revenue in each foundation and there Charity\n=====>>>>>");
+    printf("What type of report would you like to generate? \n1)yearly earning for each artist \n2)revenue in each foundation and there Charity\n=====>>>>>");
     scanf("%d",&type);
     if(type == 1){
         FILE *earningPtr;
         earningPtr=fopen("earningreport.txt","w");
         if(earningPtr == NULL){
-            printf("file was not opened \n");
+            printf("file was not opened \n\a");
         }else{
             for(i=0;i<acount;i++){
                 printf("*********************************************\n");
@@ -573,7 +575,7 @@ void storeRec(){
     ArtistfilePtr=fopen("artist_data.bin","wb");
     bookingPtr = fopen("Bcount.txt","w");
 	if(ArtistfilePtr==NULL || bookingPtr==NULL){
-		printf("The file is not opened.\n");
+		printf("The file is not opened.\n\a");
 	}
 	else{
             fwrite(&artist,sizeof(Artists),acount,ArtistfilePtr);
@@ -590,7 +592,7 @@ void readRec(){
     bookingPtr = fopen("Bcount.txt","r");
 
     if(ArtistfilePtr==NULL || bookingPtr == NULL){
-        printf("The file is not opened yet.\n");
+        printf("The file is not opened yet.\n\a");
     }else{
 
         while(!feof(ArtistfilePtr)){
@@ -610,7 +612,7 @@ void create_account(){
     int pin,flag=FALSE;
     char whoami;
     char pname[10],pname2[10],uname[10],uname2[10];
-    printf("Enter administrator PIN: ");
+    printf("Please enter administrator PIN: ");
     scanf("%d",&pin);
     if(pin==6969){
         fflush(stdin);
@@ -618,7 +620,7 @@ void create_account(){
         scanf("%c",&whoami);
         fflush(stdin);
         do{
-        printf("Enter a username: ");
+        printf("Please enter the a username you wish to login with: ");
         gets(uname);
             if(whoami=='M'){
                 LogindataPtr = fopen("Manager_Password.bin","rb");
@@ -628,21 +630,21 @@ void create_account(){
             while(!feof(LogindataPtr)){
                 fscanf(LogindataPtr,"%s",&uname2);
                 if(strcmp(uname2,uname)==0){
-                    printf("That username is already taken\n");
+                    printf("\nAm sorry but that username is already taken\n\a");
                     flag=TRUE;
                     break;
                 }else{flag=FALSE;}
             }
         }while(flag ==TRUE);
-        printf("Enter password: ");
+        printf("Please enter the password: ");
         gets(pname);
-        printf("confirm Password: ");
+        printf("Please confirm the Password: ");
         gets(pname2);
         if(strcmp(pname,pname2)==0){
             if(whoami == 'M'){
                 LogindataPtr = fopen("Manager_Password.bin","ab");
                 if(LogindataPtr==NULL){
-                    printf("File was not opened");
+                    printf("File was not opened\n\a");
                 }else{
                 fprintf(LogindataPtr,"%s %s",uname,pname);
                 fprintf(LogindataPtr,"\n");
@@ -651,7 +653,7 @@ void create_account(){
             }else if(whoami == 'C'){
                 LogindataPtr = fopen("Clerk_Password.bin","ab");
                 if(LogindataPtr==NULL){
-                    printf("File was not opened");
+                    printf("File was not opened\n\a");
                 }else{
                 fprintf(LogindataPtr,"%s %s",uname,pname);
                 fprintf(LogindataPtr,"\n");
@@ -700,7 +702,7 @@ void run(int a){
         if(acount<MAX_ART)
             add_artist();
         else
-            printf("You have reached the maximum artist\n");
+            printf("\nAm sorry but you have reached the maximum artist\n\a");
         system("pause");
         system("cls");
         break;
@@ -771,11 +773,11 @@ int main()
         }
         exit(TRUE);
     }else{
-        printf("\n Am sorry but you entered an incorrect Username or password\n");
+        printf("\n Am sorry but you entered an incorrect Username or password\n\a");
         system("pause");
         login_attempts+=1;
         if(login_attempts==3){
-            printf("You tried to login too many times\nConnection terminated\n");
+            printf("You tried to login too many times\nConnection terminated\n\a");
             system("pause");
             exit(TRUE);
         }
