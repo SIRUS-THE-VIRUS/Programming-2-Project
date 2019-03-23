@@ -4,6 +4,9 @@ La-Shawn Reynolds    1800712
 Nsia McKenzie        1802723
 Kurt Jones           1803636
 
+NOTEs:
+ADMIN PIN = 6969
+
 */
 
 //Calling the required system libraries
@@ -162,6 +165,7 @@ void add_artist(){
 
             }
         }else{date = TRUE;}
+        //if counter is 0 then you cant compare date to anything so its automatic true
         if (counter==TRUE)
             date = TRUE;
         }
@@ -207,7 +211,7 @@ int find_artist(char a[30]){
         return b;
     return -1;
 }
-//function to find the booking for a specific artist in the structure array
+//function to find the booking for a specific artist
 int find_booking(int temp_bnum){
     int j;
     for(j=0;j<BOOK_MAX;j++)
@@ -215,6 +219,7 @@ int find_booking(int temp_bnum){
             return j;
     return -1;
 }
+//function to add booking to a specific artist
 void add_booking(){
     int a,t,counter;
     char temp_artist[20];
@@ -295,6 +300,7 @@ void update_artist(){
     if(pos == -1){
         printf("No artist found with that artist name\a");
     }else{
+        //The clerk can only update the artist's booking info
         if(whoami==TRUE)
             printf("What do you want to update: (A)rtist basic info , (B)ooking info , (F)oundation information====>>> ");
         if(whoami==FALSE)
@@ -389,7 +395,7 @@ void update_artist(){
     }
 
 };
-
+// function to display all artist information
 void display_all_artist(){
     int a;
     int counter;
@@ -418,7 +424,7 @@ void display_all_artist(){
     }
 
 };
-
+//function to delete all information for a specific artist
 void delete_artist(){
     fflush(stdin);
     int a;
@@ -430,6 +436,8 @@ void delete_artist(){
     if(pos == -1){
         printf("\n Am sorry but no artist was found with that artist name\a");
     }else{
+        printf("*****ARTIST BASIC INFORMATION*****\n");
+        printf("Artist basic information has been cleared\n");
         for(a = pos;a<=acount;a++){
             strcpy(artist[a].stageName,artist[a+1].stageName);
             strcpy(artist[a].realName,artist[a+1].realName);
@@ -437,8 +445,8 @@ void delete_artist(){
             artist[a].accountNum=artist[a+1].accountNum;
             artist[a].accountBal=artist[a+1].accountBal;
             artist[a].earningPerYr=artist[a+1].earningPerYr;
-            //check which one larger so to know which to set the upper bound for the for loop
             printf("*****BOOKING INFORMATION*****\n");
+            printf("Booking information has been cleared\n");
             if(bcount[a]<=bcount[a+1]){
                 for(counter=0;counter<bcount[a+1];counter++){
                     artist[a].booking[counter].bookingNum=artist[a+1].booking[counter].bookingNum;
@@ -470,6 +478,7 @@ void delete_artist(){
 
             }
         printf("*****Foundation Information*****\n");
+        printf("Foundation information has been cleared\n");
             artist[a].foundation.fAccountNum=artist[a+1].foundation.fAccountNum;
             artist[a].foundation.balance=artist[a+1].foundation.balance;
             strcpy(artist[a].foundation.majorCurCharity,artist[a+1].foundation.majorCurCharity);
@@ -477,7 +486,8 @@ void delete_artist(){
     }
     acount--;
 
-};
+}
+//Function to search artist information
 void search_artist(){
     char temp_artist[20];
     int counter;
@@ -521,7 +531,8 @@ void search_artist(){
             }
         }
     }
-};
+}
+//function to generate various reports
 void generate_report(){
     int type,i;
     printf("What type of report would you like to generate? \n1)yearly earning for each artist \n2)revenue in each foundation and there Charity\n=====>>>>>");
@@ -569,7 +580,7 @@ void generate_report(){
     }
 
 };
-
+//stores the entire structure into a binary file
 void storeRec(){
     int i,b;
     ArtistfilePtr=fopen("artist_data.bin","wb");
@@ -585,7 +596,7 @@ void storeRec(){
         fprintf(bookingPtr,"%d\n",bcount[i]);
     fclose(bookingPtr);
 }
-
+//reads the binary file containing the structure and increment accordingly
 void readRec(){
     int i;
     ArtistfilePtr=fopen("artist_data.bin","rb");
@@ -599,15 +610,16 @@ void readRec(){
                 fread(&artist[acount],sizeof(Artists),1,ArtistfilePtr);
 
             acount++;
-            //printf("Reading data into structure\n");
         };
         acount--;
     }
+    //read the booking counter for each artist
     for(i=0;i<acount;i++)
         fscanf(bookingPtr,"%d",&bcount[i]);
     fclose(ArtistfilePtr);
 
 }
+//function for creating an account for user providing you have the admin pin
 void create_account(){
     int pin,flag=FALSE;
     char whoami;
@@ -664,7 +676,7 @@ void create_account(){
     }
 
 }
-
+//Function for clerk to run the switch taking parameter from the clerk menu
 void run2(int a){
     switch(a){
     case 1:
@@ -696,6 +708,7 @@ void run2(int a){
         break;
     }
 }
+//Function taking parameter from manager's menu
 void run(int a){
     switch(a){
     case 1:
@@ -738,7 +751,7 @@ void run(int a){
     }
 
 }
-
+//The main function
 int main()
 {
     readRec();
@@ -746,11 +759,12 @@ int main()
     char pname[20];
     int login_attempts = 0;
     do{
-    printf("\n\t\t\tWelcome\t\t\t\n 1)Create account\n 2)Continue : ");
+    printf("\n\t\t\tWelcome\t\t\t\n 1)Create account\n 2)Login : ");
     scanf("%d",&choice);
     if(choice == 1)
         create_account();
     }while(choice !=1 && choice!=2);
+    system("cls");
     printf("0)Manager\n1)Clerk\n=======>>> ");
     scanf("%d",&whoami);
     fflush(stdin);
@@ -773,8 +787,10 @@ int main()
         }
         exit(TRUE);
     }else{
-        printf("\n Am sorry but you entered an incorrect Username or password\n\a");
+        system("cls");
+        printf("\nAm sorry but you entered an incorrect Username or password\n\a");
         system("pause");
+        system("cls");
         login_attempts+=1;
         if(login_attempts==3){
             printf("You tried to login too many times\nConnection terminated\n\a");
